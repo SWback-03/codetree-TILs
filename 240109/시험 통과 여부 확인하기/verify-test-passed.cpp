@@ -11,7 +11,7 @@ int main() {
     }
     else{
         int k = 80-n;
-        cout<<"\""<<k<<" more score\"";
+        cout<<k<<" more score";
     }
     return 0;
 }
