@@ -14,7 +14,9 @@ int main() {
     }
 
     char current_val = arr[0][0];
+    char end_val = arr[R-1][C-1];
     int cnt = 0;
+    if(current_val != end_val){
     for(int i=1; i<R-2; ++i){
         for(int j=1; j<C-2; ++j){
             if(arr[i][j] != current_val){
@@ -30,5 +32,6 @@ int main() {
         }
     }
     cout<<cnt;
+    }
     return 0;
 }
