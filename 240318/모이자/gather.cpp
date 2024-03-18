@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <climits>
 
 using namespace std;
 
 int calculate(vector<int> a, int n){
 
-    int min_value = 9999;
+    int min_value = INT_MAX;
 
     for(int i=0; i<n; ++i){
         int sum = 0;
