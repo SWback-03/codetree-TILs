@@ -11,9 +11,16 @@ void recursive(int a, int b, int c, int cnt) {
         return;
     }
     //왼쪽꺼 이동
-    recursive(b, (b + c) / 2, c, cnt + 1);
+    //recursive(b, (b + c) / 2, c, cnt + 1);
     //오른쪽꺼 이동
-    recursive(a, (a + b) / 2, b, cnt + 1);
+    //recursive(a, (a + b) / 2, b, cnt + 1);
+
+    for(int i=b+1; i<c; ++i){
+        recursive(b, i, c, cnt + 1);
+    }
+    for(int i=a+1; i<b; ++i){
+        recursive(a, i, b, cnt + 1);
+    }
 
 }
 
