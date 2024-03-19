@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,16 +11,18 @@ void recursive(int a, int b, int c, int cnt) {
         if (cnt >= max_int) max_int = cnt;
         return;
     }
-    // if(c-b == 4) recursive(b, (b + c) / 2 + 1, c, cnt + 1);
-    // else recursive(b, (b + c) / 2, c, cnt + 1);
-    // if(b-a == 4) recursive(a, (a + b) / 2 + 1, b, cnt + 1);
-    // else recursive(a, (a + b) / 2, b, cnt + 1);
+
     //왼쪽꺼 이동
     recursive(b, c-1, c, cnt + 1);
     //오른쪽꺼 이동
     recursive(a, a+1, b, cnt + 1);
 
 
+}
+
+int solve(int a, int b, int c){
+    int max_value = max(b-a,c-b);
+    return (max_value+1)/2+1;
 }
 
 int main() {
@@ -29,7 +32,7 @@ int main() {
     int x1, x2, x3;
     cin >> x1 >> x2 >> x3;
     int cnt = 0;
-    recursive(x1, x2, x3, cnt);
+    max_int = solve(x1, x2, x3);
     cout << max_int;
     return 0;
 }
