@@ -33,6 +33,6 @@ int main() {
     cin >> x1 >> x2 >> x3;
     int cnt = 0;
     max_int = solve(x1, x2, x3);
-    cout << max_int;
+    cout << max(x2-x1,x3-x2)-1;
     return 0;
 }
