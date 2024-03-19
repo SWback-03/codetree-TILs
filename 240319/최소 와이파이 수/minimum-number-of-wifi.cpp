@@ -13,7 +13,7 @@ int main() {
     int flag = -300;
     for(int i=0; i<n; ++i){
         cin>>arr[i];
-        if(arr[i]==1 && i>flag+2*m){
+        if(arr[i]==1 && i>=flag+2*m){
             flag = i+m;
             cnt++;
         }
