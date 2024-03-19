@@ -10,14 +10,16 @@ void recursive(int a, int b, int c, int cnt) {
         if (cnt >= max_int) max_int = cnt;
         return;
     }
-    if(c-b == 4) recursive(b, (b + c) / 2 + 1, c, cnt + 1);
+    // if(c-b == 4) recursive(b, (b + c) / 2 + 1, c, cnt + 1);
+    // else recursive(b, (b + c) / 2, c, cnt + 1);
+    // if(b-a == 4) recursive(a, (a + b) / 2 + 1, b, cnt + 1);
+    // else recursive(a, (a + b) / 2, b, cnt + 1);
+    //왼쪽꺼 이동
+    if(b==a+1) recursive(b, c-1, c, cnt + 1);
     else recursive(b, (b + c) / 2, c, cnt + 1);
-    if(b-a == 4) recursive(a, (a + b) / 2 + 1, b, cnt + 1);
+    //오른쪽꺼 이동
+    if(c==b+1) recursive(a, b-1 , b, cnt + 1);
     else recursive(a, (a + b) / 2, b, cnt + 1);
-    // //왼쪽꺼 이동
-    // recursive(b, (b + c) / 2, c, cnt + 1);
-    // //오른쪽꺼 이동
-    // recursive(a, (a + b) / 2, b, cnt + 1);
 
     // for(int i=b+1; i<c; ++i){
     //     recursive(b, i, c, cnt + 1);
