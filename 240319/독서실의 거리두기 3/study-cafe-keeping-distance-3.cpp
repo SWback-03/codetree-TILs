@@ -7,10 +7,10 @@ int main() {
     int N;
     
     int max_dist = 0;
-    int min_dist = 99;
+    int min_dist = 9999;
     int x;
     cin>>N;
-    char str[10];
+    char str[1000];
     for(int i=0; i<N; ++i){
         cin>>str[i];
     }
