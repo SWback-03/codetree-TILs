@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
     // 여기에 코드를 작성해주세요.
-    sync_with_stdio(false);
+    ios::sync_with_stdio(false);
     cin.tie(NULL);
     int n, k;
     cin>>n>>k;
