@@ -14,7 +14,7 @@ int main() {
     }
 
     // 배열 정렬
-    sort(arr.begin(), arr.end());
+    //sort(arr.begin(), arr.end());
 
     int ans = 0;
     // 세 수의 조합을 찾기
