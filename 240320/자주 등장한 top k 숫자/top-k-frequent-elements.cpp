@@ -8,6 +8,10 @@ vector<pair<int,int>> vect;
 int n,k;
 int arr[100000];
 
+// bool compare(int i, int j){
+//     return j<i;
+// }
+
 int main() {
     
     cin>>n>>k;
@@ -33,10 +37,14 @@ int main() {
         vect.push_back(make_pair(it->second,it->first));
     }
 
-    sort(vect.begin(), vect.end());
+    sort(vect.begin(), vect.end(), greater<>());
 
-    for(int i = (int)vect.size() - 1; i >= (int)vect.size() - k; i--)
-        cout << vect[i].second << " ";
+    // for(int i = (int)vect.size() - 1; i >= (int)vect.size() - k; i--)
+    //     cout << vect[i].second << " ";
+
+    for(int i=0; i<k; ++i){
+        cout<<vect[i].second<<" ";
+    }
 
     return 0;
 }
