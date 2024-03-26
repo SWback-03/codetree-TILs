@@ -23,7 +23,7 @@ int main() {
     int total_cnt = 0;
     for(int i=1; i<n+1; ++i){
         for(int j=1; j<n+1; ++j){
-            if(map[i][j]==0){
+            
                 int cnt = 0;
                 for(int k=0; k<4; ++k){
                     int ny = i+dy[k];
@@ -33,9 +33,10 @@ int main() {
                     }
                     if(cnt==3){
                         total_cnt++;
+                        break;
                     }
                 }
-            }
+            
         }
     }
     cout<<total_cnt;
