@@ -49,7 +49,8 @@ int bfs(int sy, int sx){
         bomb_cnt++;
     }
 
-    return cnt; //이어서 터진 폭탄 갯수
+    if(cnt == 0) return 1;
+    else return cnt; //이어서 터진 폭탄 갯수
 }
 
 int main() {
