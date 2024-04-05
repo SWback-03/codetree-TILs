@@ -18,30 +18,31 @@ int bomb_cnt = 0;
 stack<pair<int,int>> q;
 
 int bfs(int sy, int sx){
+    q = stack<pair<int, int>>(); 
     q.push({sy,sx});
     int val = map[sy][sx];
-    int cnt = 1;
+    int cnt = 0;
     
     
     while(!q.empty()){
         int y = q.top().first;
         int x = q.top().second;
-        visited[y][x] = 1;
-        bomb[y][x] = 1;
+        
         q.pop();
 
         for(int i=0; i<4; ++i){
             int ny = y+dy[i];
             int nx = x+dx[i];
             if(map[ny][nx] > 0 && !visited[ny][nx] && map[ny][nx] == val){
+                visited[ny][nx] = 1;
+                bomb[ny][nx] = 1;
                 q.push({ny,nx});
                 cnt++;
             }
         }
     }
     if(cnt<4){
-        //bomb[102][102] = bomb_temp[102][102]; //이전으로 되돌림
-        copy(&bomb_temp[0][0],&bomb_temp[0][0]+10004,&bomb[0][0]);
+        copy(&bomb_temp[0][0],&bomb_temp[0][0]+10004,&bomb[0][0]); //이전으로 되돌림
     }
     else {
         copy(&bomb[0][0],&bomb[0][0]+10004,&bomb[0][0]); //bomb 업데이트
