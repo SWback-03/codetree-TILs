@@ -1,9 +1,6 @@
-//#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 
 using namespace std;
-
-const int check = 2;
 
 int n, m, p, c, d;
 
@@ -80,9 +77,6 @@ int find_close_santa() {
 
 //루돌프가 가장 가까운 산타 찾고 이동
 void find_santa() {
-
-
-
 
     int min_dist = 99999;
     int y=0, x=0;
@@ -261,8 +255,8 @@ int main() {
         int cnt = 0;
         //탈락하지 않은 산타들에게 1점씩 추가
         for (int j = 1; j <= p; ++j) {
-            //if (santa[j][0] > 0 && santa[j][0] <= n && santa[j][1] > 0 && santa[j][1] <= n) {
-            if(!santa[j][4]){
+            if (santa[j][0] > 0 && santa[j][0] <= n && santa[j][1] > 0 && santa[j][1] <= n) {
+            //if(!santa[j][4]){
                 santa[j][2]++;
             }
             else {//다 탈락하면 정지
