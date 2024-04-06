@@ -206,7 +206,7 @@ void find_ludolf() {
             }
 
             map[santa[j][0]][santa[j][1]] = j;
-
+            ////출력 테스트
             //    for (int i = 1; i <= n; ++i) {
             //        for (int j = 1; j <= n; ++j) {
             //            if (map[i][j] >= 0)
@@ -255,10 +255,8 @@ int main() {
 
         //cout << "루돌프 이동" << "\n";
         find_santa();
-        //cout << "\n\n\n\n";
         //cout << "산타 이동" << "\n";
         find_ludolf();
-        //cout << "\n\n\n\n";
 
 
         int cnt = 0;
@@ -272,7 +270,7 @@ int main() {
                 cnt++;
                 if (cnt == p) {
                     for (int k = 1; k <= p; ++k) {
-                        cout << k << santa[k][2] << " ";
+                        cout <<santa[k][2] << " ";
                     }
                     return 0;
                 }
