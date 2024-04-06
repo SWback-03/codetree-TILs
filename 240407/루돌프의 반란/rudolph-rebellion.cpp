@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 
 using namespace std;
@@ -6,8 +6,6 @@ using namespace std;
 const int check = 2;
 
 int n, m, p, c, d;
-
-int l_sr, l_sc;
 
 int map[52][52] = { 0, }; //산타위치 자기 자신 번호, 루돌프 위치 -1
 int santa[31][5] = { 0, }; //y,x좌표, 점수, 현재상태(기절시 1), 탈락여부
@@ -50,7 +48,7 @@ void l_push(int number, int move_y, int move_x) {
 //루돌프가 가장 가까운 산타 찾기
 int find_close_santa() {
     int dist = 99999;
-    int close_santa_num;
+    int close_santa_num = 0;
     for (int i = 1; i <= p; ++i) {
         if (santa[i][4] == 1) continue;
         if (santa[i][0] > 0 && santa[i][1] <= n && santa[i][4] == 0)// map내의 산타에 대해서만 탐색
@@ -87,8 +85,8 @@ void find_santa() {
 
 
     int min_dist = 99999;
-    int y, x;
-    int move_y, move_x;
+    int y=0, x=0;
+    int move_y=0, move_x=0;
     int closest_santa_num = find_close_santa();
     for (int i = 0; i < 8; ++i) {
 
