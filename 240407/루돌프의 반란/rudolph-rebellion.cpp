@@ -272,7 +272,7 @@ int main() {
                 cnt++;
                 if (cnt == p) {
                     for (int k = 1; k <= p; ++k) {
-                        cout << k << " 번호 산타 현재 점수: " << santa[k][2] << "\n";
+                        cout << k << santa[k][2] << " ";
                     }
                     return 0;
                 }
