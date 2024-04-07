@@ -76,6 +76,10 @@ void move(int king_i, int d) {
                     }
                     temp_stk.pop();
                 }
+
+                for (int i = 1; i <= n; ++i) {
+                    knight[i].conflict = 0;
+                }
                 return;
             }
         }
@@ -86,10 +90,14 @@ void move(int king_i, int d) {
                 if (knight_map[knight_loc[temp][i].first][knight_loc[temp][i].second] != 0) { // 이동한 기사맵에 다른 기사 있을때
                     int ano_knight = knight_map[knight_loc[temp][i].first][knight_loc[temp][i].second]; //다른기사 번호 저장
                     
-                    knight[ano_knight].conflict = 1; //충돌 확인
                     
-                    if(check_knight[ano_knight] == 0)
+                    
+                    
+                    if (check_knight[ano_knight] == 0) {
+                        knight[ano_knight].conflict = 1; //충돌 확인
                         stk.push(ano_knight); //다른 기사 번호 저장됨
+                        
+                    }
                     check_knight[ano_knight] = 1;
 
 
@@ -156,6 +164,7 @@ int main() {
     //맵 생성
 
 
+
     int r, c, h, w, k;
     for (int i = 1; i <= n; ++i) {
         cin >> r >> c >> h >> w >> k;
@@ -167,6 +176,7 @@ int main() {
             for (int k = 0; k < w; ++k) {
                 knight_map[r + j][c + k] = i;
                 knight_loc[i].push_back({ r + j,c + k });
+
             }
         }
 
