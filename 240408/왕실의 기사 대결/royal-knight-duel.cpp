@@ -1,4 +1,3 @@
-//#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -36,12 +35,16 @@ void move(int king_i, int d) {
 
     stk = stack<int>();
     temp_stk = stack<int>();
-    
+
     stk.push(king_i);
+
+    
+
+    int count = 0;
 
     while (!stk.empty()) {
 
-        
+        count++;
 
         int temp = stk.top();
         stk.pop();
@@ -77,12 +80,18 @@ void move(int king_i, int d) {
             }
         }
 
+        memset(check_knight, 0, sizeof(check_knight));
         for (int i = 0; i < knight_loc[temp].size(); ++i) {
             if (knight_map[knight_loc[temp][i].first][knight_loc[temp][i].second] != temp) {
                 if (knight_map[knight_loc[temp][i].first][knight_loc[temp][i].second] != 0) { // 이동한 기사맵에 다른 기사 있을때
                     int ano_knight = knight_map[knight_loc[temp][i].first][knight_loc[temp][i].second]; //다른기사 번호 저장
+                    
                     knight[ano_knight].conflict = 1; //충돌 확인
-                    stk.push(ano_knight); //다른 기사 번호 저장됨
+                    
+                    if(check_knight[ano_knight] == 0)
+                        stk.push(ano_knight); //다른 기사 번호 저장됨
+                    check_knight[ano_knight] = 1;
+
 
                 }
             }
@@ -127,16 +136,6 @@ void move(int king_i, int d) {
         }
     }//체력 함정 확인
 
-    // //맵 생성 확인
-    // for(int i=1; i<=l; ++i){
-    //     for(int j=1; j<=l; ++j){
-    //         cout<<knight_map[i][j]<<" ";
-    //     }
-    //     cout<<"\n";
-    // }
-    // cout<<"damage: "<<knight[1].damage<<" "<<knight[2].damage<<" "<<knight[3].damage<<" ";
-    // //맵 생성 확인
-
 
 }
 
@@ -156,14 +155,6 @@ int main() {
     }
     //맵 생성
 
-    // //맵 생성 확인
-    // for(int i=0; i<=l+1; ++i){
-    //     for(int j=0; j<=l+1; ++j){
-    //         cout<<map[i][j]<<" ";
-    //     }
-    //     cout<<"\n";
-    // }
-    // //맵 생성 확인
 
     int r, c, h, w, k;
     for (int i = 1; i <= n; ++i) {
@@ -176,23 +167,12 @@ int main() {
             for (int k = 0; k < w; ++k) {
                 knight_map[r + j][c + k] = i;
                 knight_loc[i].push_back({ r + j,c + k });
-
-                // cout<<knight_loc[i][cnt].first<<" ";
-                // cout<<knight_loc[i][cnt].second<<"\n";
-                // cnt++;
             }
         }
 
     }
     //기사 맵 생성
-    // //맵 생성 확인
-    // for(int i=1; i<=l; ++i){
-    //     for(int j=1; j<=l; ++j){
-    //         cout<<knight_map[i][j]<<" ";
-    //     }
-    //     cout<<"\n";
-    // }
-    // //맵 생성 확인
+
 
     int king_i, d;
     for (int i = 0; i < q; ++i) {
