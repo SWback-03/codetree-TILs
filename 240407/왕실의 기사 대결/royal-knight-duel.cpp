@@ -33,8 +33,7 @@ int knight_map[42][42] = { 0, };
 
 
 void move(int king_i, int d) {
-    stk = stack<int>();
-    temp_stk = stack<int>();
+
 
     stk.push(king_i);
 
