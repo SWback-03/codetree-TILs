@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstring>
 #include <queue>
+#include <vector>
 using namespace std;
 
 int n, q;
@@ -11,12 +12,14 @@ int visited_queue[66][66] = {0,};
 int map_info[66][66] = {0,};
 int temp_map[66][66] = {0,};
 
+
 int dy[4] = {0,1,0,-1};
 int dx[4] = {1,0,-1,0};
 
 int rotate_dy[4] = {0,0,1,0};
 int rotate_dx[4] = {0,1,0,-1};
 
+queue<pair<int,int>> loc;
 queue<pair<int,int>> que;
 
 
@@ -67,14 +70,25 @@ bool check_side(int y, int x){
 
 void melt(){
     int map_len = pow(2,n);
+    loc = queue<pair<int,int>>();
 
     for(int i=1; i<=map_len; ++i){
         for(int j=1; j<=map_len; ++j){
             if(check_side(i,j) && map[i][j]>0){ //melt 조건 충족(3칸 인접X)
-                map[i][j]--;
+                //map[i][j]--;
+                loc.push({i,j});
             }
         }
     }
+
+    while(!loc.empty()){
+        int y = loc.front().first;
+        int x = loc.front().second;
+        map[y][x]--;
+        loc.pop();
+    }
+
+
 }
 
 void set_map(int level){
@@ -167,6 +181,7 @@ int main() {
 
 
             // //map 출력 확인
+            // cout<<"rotate level: "<<rotate_level<<"\n";
             // for(int i=0; i<=map_len+1; ++i){
             //     for(int j=0; j<=map_len+1; ++j){
             //         cout<<map[i][j]<<" ";
@@ -180,8 +195,19 @@ int main() {
 
             memset(visited_map,0,sizeof(visited_map));
         }
-        else
+        else{
             melt();
+            // //map 출력 확인
+            // cout<<"rotate level: "<<rotate_level<<"\n";
+            // for(int i=0; i<=map_len+1; ++i){
+            //     for(int j=0; j<=map_len+1; ++j){
+            //         cout<<map[i][j]<<" ";
+            //     }
+            //     cout<<"\n";
+            // }
+            // cout<<"\n";
+            // //map 출력 확인
+        }
     }
 
     // for(int i=0; i<=map_len+1; ++i){
