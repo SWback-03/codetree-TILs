@@ -116,21 +116,20 @@ void rect(){
         int ny = cand[i].first;
         int nx = cand[i].second;
         int rect_size = find_min(ny, nx);
+
         if(rect_size<max_size){
             max_size = rect_size;
             y = ny;
             x = nx;
             make_rect(y,x,max_size);
         }
-        else if(rect_size == max_size){
-            make_rect(y,x,max_size);
+
+        else if(rect_size == max_size){ //현재 max, r,c값 있음
             int y1 = r;
             int x1 = c;
             make_rect(ny,nx,max_size);
             int y2 = r;
             int x2 = c;
-
-            //cout<<"y1: "<<y1<<" /x1: "<<x1<<" /y2: "<<y2<<" /x2: "<<x2<<"\n";
 
             if(y1<y2){
                 r = y1;
@@ -150,10 +149,40 @@ void rect(){
                     c = x2;
                 }
             }
-            y = r;
-            x = c;
-            //cout<<"changed_r: "<<r<<" /c: "<<c<<"\n";
         }
+
+        // else if(rect_size == max_size){  //현재 max, r,c값 있음
+        //     make_rect(y,x,max_size);
+        //     int y1 = r;
+        //     int x1 = c;
+        //     make_rect(ny,nx,max_size);
+        //     int y2 = r;
+        //     int x2 = c;
+
+        //     //cout<<"y1: "<<y1<<" /x1: "<<x1<<" /y2: "<<y2<<" /x2: "<<x2<<"\n";
+
+        //     if(y1<y2){
+        //         r = y1;
+        //         c = x1;
+        //     }
+        //     else if(y2<y1){
+        //         r = y2;
+        //         c = x2;
+        //     }
+        //     else{
+        //         if(x1<x2){
+        //         r = y1;
+        //         c = x1;
+        //         }
+        //         else if(x2<x1){
+        //             r = y2;
+        //             c = x2;
+        //         }
+        //     }
+        //     y = r;
+        //     x = c;
+        //     //cout<<"changed_r: "<<r<<" /c: "<<c<<"\n";
+        // }
 
     }
 
