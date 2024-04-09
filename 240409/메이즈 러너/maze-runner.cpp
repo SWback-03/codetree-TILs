@@ -66,7 +66,7 @@ void move(){
         }
         else{
             total_dist++;
-            cout<<"curr: "<<curr_y<<" "<<curr_x<<"\n";
+            //cout<<"curr: "<<curr_y<<" "<<curr_x<<"\n";
         }
         
         
@@ -130,6 +130,8 @@ void rect(){
             int y2 = r;
             int x2 = c;
 
+            //cout<<"y1: "<<y1<<" /x1: "<<x1<<" /y2: "<<y2<<" /x2: "<<x2<<"\n";
+
             if(y1<y2){
                 r = y1;
                 c = x1;
@@ -148,6 +150,9 @@ void rect(){
                     c = x2;
                 }
             }
+            y = r;
+            x = c;
+            //cout<<"changed_r: "<<r<<" /c: "<<c<<"\n";
         }
 
     }
@@ -248,13 +253,37 @@ int main() {
     
     int final_k;
     for(int i=0; i<K; ++i){
+
+        // int temporary[12][12] ={0,};
+        // for(int i=0; i<cand.size(); ++i){
+        //     if(cand[i].state == 1) continue;
+        //     int y = cand[i].first;
+        //     int x = cand[i].second;
+        //     temporary[y][x] = 1;
+        // }
+        // for(int i=1; i<=n; ++i){
+        //     for(int j=1; j<=n; ++j){
+        //         cout<<temporary[i][j]<<" ";
+        //     }
+        //     cout<<"\n";
+        // }
+        // cout<<"\n";
+
+
         //move
         move();
 
         int exit_cnt = 0;
         for(int j=0; j<cand.size(); ++j){
-            if(cand[j].state==1) exit_cnt++;
+            if(cand[j].state==1) {
+                
+                //cout<<j<<" :cand: "<<cand[j].first<<" "<<cand[j].second<<"\n";
+                //cout<<3<<" :check_cand: "<<cand[3].first<<" "<<cand[3].second<<"\n";
+                //cout<<6<<" :check_cand: "<<cand[6].first<<" "<<cand[6].second<<"\n";
+                
+                exit_cnt++;}
         }
+        // cout<<"\n";
         if(exit_cnt == cand.size()) break;
 
         
@@ -266,7 +295,8 @@ int main() {
         //rotate
         rotate();
 
-        cout<<"r, c, min_rect, exit: "<< r<<" "<< c<<" "<< min_rect<<" "<<exit_y<<" "<<exit_x<<"\n";
+        // cout<<"r, c, min_rect, exit: "<< r<<" "<< c<<" "<< min_rect<<" "<<exit_y<<" "<<exit_x<<"\n";
+        // cout<<"r, c, min_rect: "<< r<<" "<< c<<" "<< min_rect<<"\n";
 
         // for(int i=1; i<=n; ++i){
         //     for(int j=1; j<=n; ++j){
@@ -277,6 +307,7 @@ int main() {
         // cout<<"\n";
 
         // int temporary[12][12] ={0,};
+        // temporary[exit_y][exit_x] = -1;
         // for(int i=0; i<cand.size(); ++i){
         //     if(cand[i].state == 1) continue;
         //     int y = cand[i].first;
@@ -296,8 +327,8 @@ int main() {
         final_k = i;
     }
 
-    cout<<total_dist<<"\n"<<exit_y<<" "<<exit_x<<" "<<final_k;
-
+    cout<<total_dist<<"\n"<<exit_y<<" "<<exit_x;
+    // cout<<"\n"<<final_k;
     
     return 0;
 }
