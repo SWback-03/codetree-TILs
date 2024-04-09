@@ -225,7 +225,7 @@ int main() {
 
 
     
-
+    int exit_cnt = 0;
     for(int i=0; i<k; ++i){
         //move
         move();
@@ -264,6 +264,11 @@ int main() {
         // }
         // cout<<"\n";
 
+        
+        for(int i=0; i<cand.size(); ++i){
+            if(cand[i].state==1) exit_cnt++;
+        }
+        if(exit_cnt == cand.size()) break;
 
     }
 
