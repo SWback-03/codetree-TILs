@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int n,m,k,exit_y,exit_x;
+int n,m,K,exit_y,exit_x;
 
 struct candidate{
     int first;
@@ -30,6 +30,7 @@ int calc(int y1, int x1, int y2, int x2){
 void move(){
     for(int i=0; i<cand.size(); ++i){
         if(cand[i].state == 1) continue;
+
         int curr_y = cand[i].first;
         int curr_x = cand[i].second;
         int min_dist = calc(exit_y,exit_x,curr_y,curr_x);
@@ -37,18 +38,38 @@ void move(){
             int ny = curr_y + dy[j];
             int nx = curr_x + dx[j];
             int curr_dist = calc(exit_y,exit_x,ny,nx);
-            if(curr_dist<=min_dist && map[ny][nx] == 0){
+            if(nx>0 && nx<=n && ny>0 && ny<=n && curr_dist<=min_dist && map[ny][nx] == 0){
+                // if(curr_dist==min_dist && cand[i].first < ny) continue;
+                // else if(curr_dist==min_dist && cand[i].second < nx) continue;
                 min_dist = curr_dist;
                 cand[i].first = ny;
                 cand[i].second = nx;
-                if(ny == exit_y && nx == exit_x){
-                    cand[i].state = 1;
-                }
+                
             }
-            if(j==3 && (cand[i].first != curr_y || cand[i].second != curr_x)){
-                total_dist++;
+            if(ny == exit_y && nx == exit_x){
+                cand[i].state = 1;
+                //total_dist++;
+                break;
             }
+
+            // if(j==3 && (cand[i].first != curr_y || cand[i].second != curr_x)){
+            //     total_dist++;
+            // }
+            
         }
+        // if(cand[i].first != curr_y || cand[i].second != curr_x){
+        //     total_dist++;
+        // }
+
+        if(cand[i].first == curr_y && cand[i].second == curr_x){
+            continue;
+        }
+        else{
+            total_dist++;
+            cout<<"curr: "<<curr_y<<" "<<curr_x<<"\n";
+        }
+        
+        
     }
 }
 
@@ -205,10 +226,10 @@ void rotate(){
 
 
 int main() {
-    cin>>n>>m>>k;
+    cin>>n>>m>>K;
     for(int i=0; i<=11; ++i){
         for(int j=0; j<=11; ++j){
-            map[i][j] = 101;
+            map[i][j] = 200;
         }
     }
     for(int i=1; i<=n; ++i){
@@ -225,16 +246,16 @@ int main() {
 
 
     
-    
-    for(int i=0; i<k; ++i){
+    int final_k;
+    for(int i=0; i<K; ++i){
         //move
         move();
 
         int exit_cnt = 0;
-        for(int i=0; i<cand.size(); ++i){
-            if(cand[i].state==1) exit_cnt++;
+        for(int j=0; j<cand.size(); ++j){
+            if(cand[j].state==1) exit_cnt++;
         }
-        if(exit_cnt == m) break;
+        if(exit_cnt == cand.size()) break;
 
         
 
@@ -245,7 +266,7 @@ int main() {
         //rotate
         rotate();
 
-        // cout<<"r, c, min_rect, exit: "<< r<<" "<< c<<" "<< min_rect<<" "<<exit_y<<" "<<exit_x<<"\n";
+        cout<<"r, c, min_rect, exit: "<< r<<" "<< c<<" "<< min_rect<<" "<<exit_y<<" "<<exit_x<<"\n";
 
         // for(int i=1; i<=n; ++i){
         //     for(int j=1; j<=n; ++j){
@@ -272,10 +293,10 @@ int main() {
 
         
 
-
+        final_k = i;
     }
 
-    cout<<total_dist<<"\n"<<exit_y<<" "<<exit_x;
+    cout<<total_dist<<"\n"<<exit_y<<" "<<exit_x<<" "<<final_k;
 
     
     return 0;
