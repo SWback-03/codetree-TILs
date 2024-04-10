@@ -45,8 +45,12 @@ void gun_erase(int num){
 void get_point(int num, int lose_num){
     int a = player[num].gun + player[num].ability;
     int b = player[lose_num].gun + player[lose_num].ability;
+    if(a-b == 0){
 
-    player[num].point = abs(a-b);
+    }
+    else{
+        player[num].point = abs(a-b);
+    }
 }
 
 void win_player(int num){ //2-2-3
@@ -68,14 +72,27 @@ void win_player(int num){ //2-2-3
 void lose_player(int num){ //2-2-2
     int y = player[num].first;
     int x = player[num].second;
+
+    map_gun_info[y][x].push_back(player[num].gun);
+    player[num].gun = 0;//총 내려놓기
+
     y += dy[player[num].dir];
     x += dx[player[num].dir];
-    if(map[y][x][0] < 0 || map[y][x][1] == 1){
-        player[num].dir = (player[num].dir+1)%4; //90도 회전
-        y = player[num].first;
-        x = player[num].second;
-        y += dy[player[num].dir];
-        x += dx[player[num].dir];
+    if(map[y][x][0] <= 0 || map[y][x][1] == 1){
+        while(1){
+            int curr_dir = player[num].dir;
+            curr_dir = (curr_dir+1)%4; //90도 회전
+            player[num].dir = curr_dir;
+            //cout<<"num: "<<curr_dir<<"\n";
+
+            //player[num].dir = (player[num].dir+1)%4; //90도 회전
+            y = player[num].first;
+            x = player[num].second;
+            y += dy[player[num].dir];
+            x += dx[player[num].dir];
+            //cout<<"y: "<<y<<" /x: "<<x<<"\n";
+            if(map[y][x][0]>=0 && map[y][x][1] == 0) break;
+        }
     }
     player[num].first = y;
     player[num].second = x;
@@ -137,23 +154,27 @@ void move(){ //플레이어 이동
                         get_point(i,j);
                         lose_player(j);
                         win_player(i);
+                        //cout<<"0 win: "<<i<<" /lose: "<<j<<"\n";
                     }
                     else if(player[i].ability+player[i].gun==player[j].ability+player[j].gun){//동점
                         if(player[i].ability>player[j].ability){//player i win
                             get_point(i,j);
                             lose_player(j);
                             win_player(i);
+                            //cout<<"1 win: "<<i<<" /lose: "<<j<<"\n";
                         }
                         else{//player j win
                             get_point(j,i);
                             lose_player(i);
                             win_player(j);
+                            //cout<<"2 win: "<<j<<" /lose: "<<i<<"\n";
                         }
                     }
                     else{//player j win
                         get_point(j,i);
                         lose_player(i);
                         win_player(j);
+                        //cout<<"3 win: "<<j<<" /lose: "<<i<<"\n";
                     }
                 }
             }
@@ -169,8 +190,8 @@ int main() {
 
     memset(map,0,sizeof(map));
 
-    for(int i = 0; i<M+2; ++i){ //맵 전체 -1로 초기화
-        for(int j = 0; j<M+2; ++j){
+    for(int i = 0; i<N+2; ++i){ //맵 전체 -1로 초기화
+        for(int j = 0; j<N+2; ++j){
             map[i][j][0] = -1;
         }
     }
@@ -197,8 +218,8 @@ int main() {
     // }
     // cout<<"\n";
 
-    // for(int i=1; i<=N; ++i){
-    //     for(int j=1; j<=N; ++j){
+    // for(int i=0; i<=N+1; ++i){
+    //     for(int j=0; j<=N+1; ++j){
     //         cout<<map[i][j][0]<<" ";
     //     }
     //     cout<<"\n";
@@ -223,8 +244,8 @@ int main() {
         move();
 
 
-        // for(int i=1; i<=N; ++i){
-        //     for(int j=1; j<=N; ++j){
+        // for(int i=0; i<=N+1; ++i){
+        //     for(int j=0; j<=N+1; ++j){
         //         cout<<map[i][j][1]<<" ";
         //     }
         //     cout<<"\n";
