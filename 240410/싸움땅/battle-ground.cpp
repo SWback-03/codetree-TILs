@@ -54,7 +54,7 @@ void get_point(int num, int lose_num) {
 void win_player(int num) { //2-2-3
     int y = player[num].first;
     int x = player[num].second;
-    map_gun_info[y][x].push_back(player[num].gun);
+    
     //if(map[y][x][0] > 0){
     if (map_gun_info[y][x].size() > 0) {
         for (int j = 0; j < map_gun_info[y][x].size(); ++j) {
@@ -62,6 +62,7 @@ void win_player(int num) { //2-2-3
                 int gun_info_tmp = player[num].gun;
                 player[num].gun = map_gun_info[y][x][j];
                 map_gun_info[y][x][j] = gun_info_tmp;
+                
                 gun_erase(num);
             }
         }
