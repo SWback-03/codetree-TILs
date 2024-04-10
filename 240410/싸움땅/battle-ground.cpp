@@ -45,12 +45,9 @@ void gun_erase(int num){
 void get_point(int num, int lose_num){
     int a = player[num].gun + player[num].ability;
     int b = player[lose_num].gun + player[lose_num].ability;
-    if(a-b == 0){
-
-    }
-    else{
-        player[num].point = abs(a-b);
-    }
+    
+    player[num].point += abs(a-b);
+    
 }
 
 void win_player(int num){ //2-2-3
@@ -243,14 +240,28 @@ int main() {
     for(int i=0; i<K; ++i){
         move();
 
+        // for(int i=1; i<=M; ++i){
+        //     // cout<<player[i].first<<","<<player[i].second<<"/";
+        //     //cout<<"dir:"<<player[i].dir<<"/abil:"<<player[i].ability<<"/gun:"<<player[i].gun<<"/point:"<<player[i].point<<"\n";
+        // }
+        // cout<<"\n";
 
-        // for(int i=0; i<=N+1; ++i){
-        //     for(int j=0; j<=N+1; ++j){
-        //         cout<<map[i][j][1]<<" ";
+        // int temporary[22][22] = {0,};
+        // for(i=1; i<=M; ++i){
+        //     temporary[player[i].first][player[i].second] = i;
+        // }
+
+        // for(int i=1; i<=N; ++i){
+        //     for(int j=1; j<=N; ++j){
+        //         cout<<temporary[i][j]<<" ";
         //     }
         //     cout<<"\n";
         // }
         // cout<<"\n";
+
+        
+
+        
     }
 
     for(int i=1; i<=M; ++i){
