@@ -19,8 +19,17 @@ struct Mystr {
     int state = 0;
 };
 
+struct camp{
+    int first;
+    int second;
+    int state = 0;
+};
+
 vector<Mystr> conv_store;
-vector<pair<int, int>> base_camp;
+//vector<pair<int, int>> base_camp;
+vector<camp> base_camp;
+
+int base_camp_size = 0;
 
 int map[17][17] = { 0, };
 
@@ -39,7 +48,7 @@ struct parent {
 parent route_bfs(int sy, int sx, int dest_y, int dest_x) {
     queue<pair<int, int>> q;
     memset(visited, 0, sizeof(visited));
-    parent parent_map[17][17] = { 0, };
+    parent parent_map[17][17] = { {0, 0}, };
     int visited_parent_map[17][17] = { 0, };
     q.push({ sy,sx });
     visited[sy][sx] = 1;
@@ -52,6 +61,7 @@ parent route_bfs(int sy, int sx, int dest_y, int dest_x) {
         for (int i = 3; i >= 0; --i) {
             int ny = y + dy[i];
             int nx = x + dx[i];
+            if (ny < 0 || ny >= 17 || nx < 0 || nx >= 17) continue;
             if (map[ny][nx] != 2 && visited[ny][nx] == 0) {
                 q.push({ ny,nx });
                 visited[ny][nx] = 1;
@@ -114,6 +124,8 @@ int dist_bfs(int sy, int sx, int dest_y, int dest_x) {
         }
     }
 
+    return 999999;
+
 
 }
 
@@ -165,7 +177,9 @@ void check_time(int num) {
     int x = conv_store[num].second;
     int min_dist = 999999;
 
-    for (int i = 0; i < base_camp.size(); ++i) {
+    for (int i = 0; i < base_camp_size; ++i) {
+        if(base_camp[i].state == 0)
+        {
         int base_camp_y = base_camp[i].first;
         int base_camp_x = base_camp[i].second;
         //베이스캠프간 거리 탐색
@@ -194,18 +208,21 @@ void check_time(int num) {
         }
 
     }
+    }
     // conv_store[num].curr_y = y;
     // conv_store[num].curr_x = x;
 
     //베이스캠프에 진입, 해당 베이스캠프 erase하기, 해당 베이스캠프 map = 2로 변경
     map[conv_store[num].curr_y][conv_store[num].curr_x] = 2;
-    for (int i = 0; i < base_camp.size(); ++i) {
-        if (base_camp[i].first == conv_store[num].curr_y && base_camp[i].second == conv_store[num].curr_x) {
-            //cout << base_camp[i].first << " " << base_camp[i].second << " " << base_camp.size() << " " << i << "\n";
-            base_camp.erase(base_camp.begin() + i);
-            break;
+    for (int i = 0; i < base_camp_size; ++i) {
+        if(base_camp[i].state == 0){
+            if(base_camp[i].first == conv_store[num].curr_y && base_camp[i].second == conv_store[num].curr_x){
+                base_camp[i].state = 1;
+                break;
+            }
         }
     }
+    
 
 
 }
@@ -224,7 +241,8 @@ int main() {
             cin >> input_tmp;
             map[i][j] = input_tmp;
             if (input_tmp == 1) {
-                base_camp.push_back({ i,j });
+                base_camp.push_back({ i,j,0 });
+                base_camp_size++;
             }
         }
     }
@@ -232,7 +250,7 @@ int main() {
     for (int i = 0; i < M; ++i) {
         int y_tmp, x_tmp;
         cin >> y_tmp >> x_tmp;
-        conv_store.push_back({ y_tmp,x_tmp,99,99,0 });
+        conv_store.push_back({ y_tmp,x_tmp,16,16,0 });
     }
 
     int clear_time = 1;
