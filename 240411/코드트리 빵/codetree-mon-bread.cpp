@@ -201,6 +201,7 @@ void check_time(int num){
     map[conv_store[num].curr_y][conv_store[num].curr_x] = 2;
     for(int i=0; i<base_camp.size(); ++i){
         if(base_camp[i].first == conv_store[num].curr_y && base_camp[i].second == conv_store[num].curr_x){
+            cout<<base_camp[i].first<<" "<<base_camp[i].second<<" "<<base_camp.size()<<" "<<i<<"\n";
             base_camp.erase(base_camp.begin()+i);
             break;
         }
@@ -239,8 +240,8 @@ int main() {
     
     
     int cnt = 0;
-    //for(int k = 0; k<2; ++k){
-    while(1){
+    for(int k = 0; k<3; ++k){
+    //while(1){
         //3, 베이스캠프에 사람 넣기
         if(curr_time<M){
             if(conv_store[curr_time].state == 0){
