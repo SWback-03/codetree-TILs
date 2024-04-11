@@ -2,12 +2,14 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+#include <algorithm>
+#include <queue>
 using namespace std;
 
 int N,M;
 
 int dy[4] = {1,0,0,-1};
-int dx[4] = {0,1,-1,1};
+int dx[4] = {0,1,-1,0};
 
 struct Mystr{
     int first;
@@ -26,27 +28,119 @@ int calc(int y1, int x1, int y2, int x2){
     return abs(y1-y2)+abs(x1-x2);
 }
 
+int visited[17][17] = {0,};
+
+struct parent{
+    int first;
+    int second;
+};
+
+//bfs 설계
+parent route_bfs(int sy, int sx, int dest_y, int dest_x){
+    queue<pair<int,int>> q;
+    memset(visited,0,sizeof(visited));
+    parent parent_map[17][17] = {0,};
+    int visited_parent_map[17][17] = {0,};
+    q.push({sy,sx});
+    visited[sy][sx] = 1;
+    visited_parent_map[sy][sx] = 1;
+
+    while(!q.empty()){
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+        for(int i=3; i>=0; --i){
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if(map[ny][nx]!=2 && visited[ny][nx]==0){
+                q.push({ny,nx});
+                visited[ny][nx] = 1;
+                if(visited_parent_map[ny][nx] == 0)
+                {
+                    parent_map[ny][nx] = {y,x};
+                    visited_parent_map[ny][nx] = 1;
+                }
+
+                if(ny==dest_y && nx==dest_x){
+                //cout<<"clear\n";
+                //return {1,1};
+                while(1){
+                    y = ny;
+                    x = nx;
+                    ny = parent_map[y][x].first;
+                    nx = parent_map[y][x].second;   
+
+                    if(ny==sy && nx == sx){
+                        parent tmp;
+                        tmp.first = y;
+                        tmp.second = x;
+                        return tmp;
+                        }
+                    }
+                }
+            }
+
+            
+        }
+    }
+
+
+}
+
+int dist_bfs(int sy, int sx, int dest_y, int dest_x){
+    queue<pair<int,int>> q;
+    memset(visited,0,sizeof(visited));
+    int dist_map[17][17] = {0,};
+    q.push({sy,sx});
+    visited[sy][sx] = 1;
+    dist_map[sy][sx] = 0;
+
+    while(!q.empty()){
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+        for(int i=3; i>=0; --i){
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if(map[ny][nx]!=2 && visited[ny][nx]==0){
+                q.push({ny,nx});
+                visited[ny][nx] = 1;
+                dist_map[ny][nx] = dist_map[y][x]+1;
+            }
+            if(ny==dest_y && nx==dest_x){
+                //cout<<"dist_bfs: " <<dist_map[dest_y][dest_x]<<"\n";
+                return dist_map[dest_y][dest_x];
+            }
+        }
+    }
+
+
+}
+
 //1
 void move(int num){ //num번째 편의점 가고자하는사람
     //현재좌표
     int y = conv_store[num].curr_y;
     int x = conv_store[num].curr_x;
     //최단거리 계산
-    int curr_dist = calc(y,x,conv_store[num].first,conv_store[num].second);
-    //하우좌상 최단거리 탐색
-    for(int i = 0; i<4; ++i){
-        int ny = conv_store[num].curr_y + dy[i];
-        int nx = conv_store[num].curr_x + dx[i];
-        int n_curr_dist = calc(ny,nx,conv_store[num].first,conv_store[num].second);
-        if(n_curr_dist<=curr_dist && map[ny][nx] != 2){
-            curr_dist = n_curr_dist;
-            y = ny;
-            x = nx;
-        }
-    }
+    // int curr_dist = calc(y,x,conv_store[num].first,conv_store[num].second);
+    // //하우좌상 최단거리 탐색
+    // for(int i = 0; i<4; ++i){
+    //     int ny = conv_store[num].curr_y + dy[i];
+    //     int nx = conv_store[num].curr_x + dx[i];
+    //     int n_curr_dist = calc(ny,nx,conv_store[num].first,conv_store[num].second);
+    //     if(n_curr_dist<=curr_dist && map[ny][nx] != 2){
+    //         curr_dist = n_curr_dist;
+    //         y = ny;
+    //         x = nx;
+    //     }
+    // }
+
+    parent location = route_bfs(y,x,conv_store[num].first,conv_store[num].second);
+    //parent location = {1,1};
     //최단거리로 위치 이동
-    conv_store[num].curr_y = y;
-    conv_store[num].curr_x = x;
+    conv_store[num].curr_y = location.first;
+    conv_store[num].curr_x = location.second;
 }
 
 //2
@@ -75,12 +169,16 @@ void check_time(int num){
         int base_camp_y = base_camp[i].first;
         int base_camp_x = base_camp[i].second;
         //베이스캠프간 거리 탐색
-        int dist = calc(y,x,base_camp_y,base_camp_x);
+        //int dist = calc(y,x,base_camp_y,base_camp_x);
+        int dist = dist_bfs(y,x,base_camp_y,base_camp_x);
+        //cout<<y<<" "<<x<<" "<<base_camp_y<<" "<<base_camp_x<<"\n";
         if(min_dist>dist){
             min_dist = dist;
             conv_store[num].curr_y = base_camp_y;
             conv_store[num].curr_x = base_camp_x;
         }
+
+        
         //가장 가까운 베이스캠프 여러개
         else if(min_dist == dist){
             if(base_camp_y<conv_store[num].curr_y){
@@ -139,28 +237,31 @@ int main() {
     int clear_time = 1;
     int curr_time = 0;
     
-    //while(!conv_store.empty()){
-    // for(int k = 0; k<7; ++k){
+    
     int cnt = 0;
-
+    //for(int k = 0; k<2; ++k){
     while(1){
         //3, 베이스캠프에 사람 넣기
         if(curr_time<M){
             if(conv_store[curr_time].state == 0){
                 check_time(curr_time);
+                //cout<<"y,x: "<<conv_store[curr_time].curr_y<<" "<<conv_store[curr_time].curr_x<<"\n";
             }
         }
 
+        
+
         //1, 사람들 이동
-        for(int i=0; i<M; ++i){
+        for(int i=0; i<=min(M-1,curr_time); ++i){
             if(conv_store[i].state == 0){
-                move(i);
                 //cout<<"move_run\n";
+                move(i);
+                
             }
         }
 
         //2, 편의점 도착 체크
-        for(int i=0; i<M; ++i){
+        for(int i=0; i<=min(M-1,curr_time); ++i){
             if(conv_store[i].state == 0){
                 check_conv_store(i);
             }
@@ -169,7 +270,7 @@ int main() {
         
 
         // int temp_map[17][17] = {0,};
-        // for(int i=0; i<M; ++i){
+        // for(int i=0; i<=min(curr_time,M-1); ++i){
         //     temp_map[conv_store[i].curr_y][conv_store[i].curr_x] = 1;
         // }
         // for(int i=1; i<=N; ++i){
@@ -181,7 +282,7 @@ int main() {
         // cout<<"\n";
 
         // memset(temp_map,0,sizeof(temp_map));
-        // for(int i=0; i<M; ++i){
+        // for(int i=0; i<=min(curr_time,M-1); ++i){
         //     temp_map[conv_store[i].first][conv_store[i].second] = 2;
         // }
         // for(int i=1; i<=N; ++i){
