@@ -115,8 +115,9 @@ void find_santa() {
         santa[curr_santa_num][3] = 2; // 산타 기절
         santa[curr_santa_num][2] += c; //산타 점수 추가
         
-         if(santa[curr_santa_num][4] != 1){
+         
         s_push(curr_santa_num, move_y, move_x);
+        if(santa[curr_santa_num][4] != 1){
         map[santa[curr_santa_num][0]][santa[curr_santa_num][1]] = curr_santa_num;}
     }
     map[ludolf[0]][ludolf[1]] = -1;
