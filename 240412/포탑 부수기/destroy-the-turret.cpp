@@ -348,7 +348,26 @@ int main() {
         }
         repair_tower();
 
-        
+        // if(i==75){
+        //     for(int i=0; i<N; ++i){
+        //         for(int j=0; j<M; ++j){
+        //             cout<<map[i][j]<<" ";
+        //         }
+        //         cout<<"\n";
+        //     }
+        // }
+
+        int cnt = 0;
+        for(int i=0; i<N; ++i){
+            for(int j=0; j<M; ++j){
+                if(map[i][j] >0){
+                    cnt++;
+                }
+            }
+        }
+        if(cnt==1){
+            break;
+        }
 
     }
     int final_max = 0;
@@ -358,6 +377,13 @@ int main() {
         }
             
     }
+
+    // for(int i=0; i<N; ++i){
+    //     for(int j=0; j<M; ++j){
+    //         cout<<map[i][j]<<" ";
+    //     }
+    //     cout<<"\n";
+    // }
 
     cout<<final_max;
 
