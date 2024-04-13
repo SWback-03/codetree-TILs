@@ -32,13 +32,14 @@ void move(int sy, int sx){//머리사람 좌표 제공, move 할때마다 visite
     queue<pair<int,int>> q;
     q.push({sy,sx});
     int flag = 0;
+    int final_point;
 
     for(int i=0; i<4; ++i){
         int ny = sy + dy[i];
         int nx = sx + dx[i];
         if(map[ny][nx] == 3){ //다 이어져있음
             flag = 1;
-
+            final_point = point_map[ny][nx];
         }
         
     }
@@ -89,6 +90,7 @@ void move(int sy, int sx){//머리사람 좌표 제공, move 할때마다 visite
 
     if(flag == 1){
         map[final_y][final_x] = 3;
+        point_map[final_y][final_x] = final_point;
     }
 
 
