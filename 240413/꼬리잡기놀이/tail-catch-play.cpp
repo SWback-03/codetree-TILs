@@ -37,7 +37,7 @@ void move(int sy, int sx){//머리사람 좌표 제공, move 할때마다 visite
     for(int i=0; i<4; ++i){
         int ny = sy + dy[i];
         int nx = sx + dx[i];
-        if(map[ny][nx] == 3){ //다 이어져있음
+        if((ny>=0 && nx>=0 && ny<N && nx<N) && map[ny][nx] == 3){ //다 이어져있음
             flag = 1;
             final_point = point_map[ny][nx];
         }
@@ -48,7 +48,7 @@ void move(int sy, int sx){//머리사람 좌표 제공, move 할때마다 visite
         int ny = sy + dy[i];
         int nx = sx + dx[i];
 
-        if(map[ny][nx]==4 || map[ny][nx]==3){
+        if((ny>=0 && nx>=0 && ny<N && nx<N) && map[ny][nx]==4 || map[ny][nx]==3){
             visited_move[ny][nx] = 1;
             map[ny][nx] = 1;
             point_map[ny][nx] = point_map[sy][sx];
@@ -68,7 +68,7 @@ void move(int sy, int sx){//머리사람 좌표 제공, move 할때마다 visite
             int ny = y + dy[i];
             int nx = x + dx[i];
 
-            if(visited_move[ny][nx] == 0 && (map[ny][nx]==2 || map[ny][nx]==3)){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && visited_move[ny][nx] == 0 && (map[ny][nx]==2 || map[ny][nx]==3)){
                 q.push({ny,nx});
                 if(map[ny][nx]==2){
                     map[y][x] = 2;
@@ -114,7 +114,7 @@ int k_bfs(int sy, int sx){
         for(int i=0; i<4; ++i){
             int ny = sy + dy[i];
             int nx = sx + dx[i];
-            if(map[ny][nx] == 1){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && map[ny][nx] == 1){
                 flag = 1;
             }
         }
@@ -125,7 +125,7 @@ int k_bfs(int sy, int sx){
         for(int i=0; i<4; ++i){
             int ny = sy + dy[i];
             int nx = sx + dx[i];
-            if(map[ny][nx] == 2){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && map[ny][nx] == 2){
                 return k_bfs(ny,nx)+1;
             }
         }
@@ -138,18 +138,18 @@ int k_bfs(int sy, int sx){
         for(int i=0; i<4; ++i){
             int ny = y + dy[i];
             int nx = x + dx[i];
-            if(visited[ny][nx] == 0 && (map[ny][nx]>0 && map[ny][nx] != 4 && map[ny][nx] != 3)){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && visited[ny][nx] == 0 && (map[ny][nx]>0 && map[ny][nx] != 4 && map[ny][nx] != 3)){
                 q.push({ny,nx});
                 path[ny][nx] = path[y][x] + 1;
                 visited[ny][nx] = 1;
             }
-            if(map[ny][nx] == 1){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && map[ny][nx] == 1){
                 return path[ny][nx]+1;
             }
         }
     }
 
-    
+    return 1;
 }
 
 //3. 머리사람 꼬리사람 바꾸기
@@ -174,7 +174,7 @@ void change(int sy, int sx){
         for(int i=0; i<4; ++i){
             int ny = y + dy[i];
             int nx = x + dx[i];
-            if(visited[ny][nx] == 0 && (map[ny][nx]>0 && map[ny][nx] != 4)){
+            if((ny>=0 && nx>=0 && ny<N && nx<N) && visited[ny][nx] == 0 && (map[ny][nx]>0 && map[ny][nx] != 4)){
                 q.push({ny,nx});
                 visited[ny][nx] = 1;
                 if(map[ny][nx] == 3){
