@@ -50,7 +50,7 @@ int main() {
     }
 
     int total = 0;
-    for(const auto&iter : map_12){
+    for(auto&iter : map_12){
         if(map_34.find(iter.first) != map_34.end()){
             total += map_12[iter.first]*map_34[iter.first];
         }
