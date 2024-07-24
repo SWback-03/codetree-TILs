@@ -14,7 +14,6 @@ int check(vector<int> v){
         if(v[i-1]<v[i])
             continue;
         else
-            //cout<<"i: "<<i<<"/  ";
             return i;
     }
     return 0; //전체가 오름차순
@@ -34,16 +33,14 @@ int find(vector<int> v, int start){
     //cout<<"start: "<<start<<"/  ";
     return pos; //가까운 수 위치 저장
     // -1 이 출력일 때 맨 앞자리 수보다 작은 수가 없다는 것을 뜻하므로
-    // v.end()-1에 insert
+    // start-1에 insert
 }
 
 
-vector<int> run(vector<int> v, int pos){
+vector<int> run(vector<int> v, int pos, int start){
     //0~pos까지 숫자를 pos~끝 숫자 사이에 삽입함
     //v[0]과 오름차순 숫자 내 해당 수보다 제일 가까운 작은 수 뒤에 삽입
     int count = 0;
-
-    
 
     //cout<<"pos: "<<pos<<"/  ";
     if(pos>=0){
@@ -51,7 +48,7 @@ vector<int> run(vector<int> v, int pos){
         v.erase(v.begin());
     }
     else if(pos<0){
-        v.insert(v.end()-1,v[0]);
+        v.insert(v.begin()+start,v[0]);
         v.erase(v.begin());
     }
 
@@ -86,13 +83,16 @@ int main() {
         }
         else{
             int start = check(v);
-            //cout<<"real start: "<<start<<"/  ";
+            //cout<<"start: "<<start<<"/  ";
             int pos = find(v,start);
 
-            v = run(v,pos);
+            v = run(v,pos,start);
             count++;
         }
     }
 
     return 0;
 }
+
+// 15
+// 45 1 6 36 43 24 7 58 56 42 2 8 10 12 13
