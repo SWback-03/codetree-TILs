@@ -23,13 +23,19 @@ queue<int> del(queue<int> q){
             if(set[i].find(q.front()) != set[i].end()){
                 set[i].erase(q.front());
             }
-            if(set[i].size() == 1){
-                auto iter = set[i].begin();
-                result_q.push(*iter);
-            }
+            // if(set[i].size() == 1){
+            //     auto iter = set[i].begin();
+            //     result_q.push(*iter);
+            // }
         }
         q.pop();
         count++;
+    }
+    for(int i=1; i<=G; ++i){
+        if(set[i].size() == 1){
+            auto iter = set[i].begin();
+            result_q.push(*iter);
+        }
     }
 
     return result_q;
