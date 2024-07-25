@@ -32,7 +32,7 @@ int main() {
     for(int i =0; i<n; ++i){
         for(int j=0; j<n; ++j){
             if(map.find(-(arr[2][i]+arr[3][j])) != map.end()){
-                count++;
+                count += map[-(arr[2][i]+arr[3][j])];
             }
         }
     }
