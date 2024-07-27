@@ -10,8 +10,7 @@ using namespace std;
 
 int n, m, k;
 
-priority_queue<int,vector<int>,greater<int>> arr_n;
-priority_queue<int> arr_m;
+priority_queue<int> arr;
 unordered_multiset<int> umset;
 
 int main() {
@@ -29,23 +28,24 @@ int main() {
         int tmp;
         cin>>tmp;
         for(auto iter : umset){
-            arr_n.push(iter + tmp);
+            int sum = iter+tmp;
+            if(arr.size()==k){
+                if(sum<arr.top()){
+                    arr.pop();
+                    arr.push(sum);
+                }
+            }
+            else{
+                arr.push(sum);
+            }
         }
     }
 
-    for(int i=0; i<k-1; ++i){
-        
-        arr_n.pop();
-        // cout<<arr_n.top()<<" ";
-        
-    }
-
-    // for(int i=0; i<n*m; ++i){
-    //     cout<<arr_n.top()<<" ";
-    //     arr_n.pop();
+    // while(!arr.empty()){
+    //     cout<<arr.top()<<" ";
+    //     arr.pop();
     // }
-
-    cout<<arr_n.top();
+    cout<<arr.top();
 
     return 0;
 }
