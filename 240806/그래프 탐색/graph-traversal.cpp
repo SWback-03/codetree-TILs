@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 
 #define MAX_NUM 1000
 
@@ -10,13 +11,33 @@ int vertex_cnt = 0;
 vector<int> graph[MAX_NUM+1];
 bool visited[MAX_NUM+1];
 
+// void DFS(int vertex){
+//     for(int i=0; i<(int) graph[vertex].size(); ++i){
+//         int curr_v = graph[vertex][i];
+//         if(!visited[curr_v]){
+//             visited[curr_v] = true;
+//             vertex_cnt++;
+//             DFS(curr_v);
+//         }
+//     }
+// }
+
 void DFS(int vertex){
-    for(int i=0; i<(int) graph[vertex].size(); ++i){
-        int curr_v = graph[vertex][i];
-        if(!visited[curr_v]){
-            visited[curr_v] = true;
+    stack<int> stack;
+
+    stack.push(vertex);
+
+    while(!stack.empty()){
+        int v = stack.top();
+        stack.pop();
+        
+        if(!visited[v]){
+            visited[v] = true;
             vertex_cnt++;
-            DFS(curr_v);
+        }
+        for(auto i=graph[v].begin(); i!=graph[v].end(); ++i){
+            if(!visited[*i])
+                stack.push(*i);
         }
     }
 }
