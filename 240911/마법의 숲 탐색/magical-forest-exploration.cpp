@@ -82,7 +82,7 @@ int bfs(int sy, int sx){
             int nx = x + dx[i];
             if(ny < 0 || nx < 0 || ny >= R+3 || nx >= C) continue;
             if(visited[ny][nx] == true || map[ny][nx] == 0) continue;
-            if((curr_state == 2 && map[ny][nx] == 3) || (curr_state == 3 && map[ny][nx] == 3) ||(curr_state == 3 && map[ny][nx] == 1) || (curr_state == 1 && map[ny][nx] == 2)){
+            if((curr_state == 2 && map[ny][nx] == 3) || (curr_state == 3 && map[ny][nx] == 2) || (curr_state == 3 && map[ny][nx] == 3) ||(curr_state == 3 && map[ny][nx] == 1) || (curr_state == 1 && map[ny][nx] == 2)){
                 q.push(make_pair(ny,nx));
                 visited[ny][nx] = true;
             }
@@ -157,13 +157,22 @@ void move_golem(int sy, int sx, int dir){
         if(!check_state("left",sy,sx)) break;
         sy++;
         sx--;
-        dir = (dir-1)%4;
+        if(dir == 0) dir = 3;
+        else dir = (dir-1)%4;
+        while(1){
+            if(!check_state("down",sy,sx)) break;
+            sy++;
+        }
     }
     while(1){
         if(!check_state("right",sy,sx)) break;
         sy++;
         sx++;
         dir = (dir+1)%4;
+        while(1){
+            if(!check_state("down",sy,sx)) break;
+            sy++;
+        }
     }
 
     draw_map(sy,sx,dir);
@@ -172,8 +181,6 @@ void move_golem(int sy, int sx, int dir){
         clear_map();
     }
     else{
-        // cout<<"result: "<<bfs(sy,sx)<<endl;
-        // cout<<bfs(sy,sx) - 2<<endl;
         result_val += (bfs(sy,sx) - 2);
     }
 
@@ -186,7 +193,6 @@ int main() {
     cin>>R>>C>>K;
 
     for(int i=0; i<K; ++i){
-    // for(int i=0; i<1; ++i){
         int ci, di;
         cin>>ci>>di;
         ci--;
