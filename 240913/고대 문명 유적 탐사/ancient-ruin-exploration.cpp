@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int K, M, result = 0;
+int K, M;
 int map[5][5] = {0,};
 queue<int> q;
 
@@ -166,7 +166,7 @@ void adventure(){
 
     //출력
     int real_tmp = rotate(result_y,result_x,max_rotate,1);
-    result += real_tmp;
+    int result = real_tmp;
 
     //벽면 채우기
     for(int i=0; i<5; ++i){
@@ -192,6 +192,8 @@ void adventure(){
         }
     }
 
+    cout<<result<<" ";
+
     return;
 }
 
@@ -213,7 +215,7 @@ int main(){
     for(int i=0; i<K; ++i)
         adventure();
 
-    cout<<result<<endl;
+    
 
     return 0;
 }
