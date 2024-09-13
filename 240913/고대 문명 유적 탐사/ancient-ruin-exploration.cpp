@@ -17,6 +17,7 @@ void cout_map(){
         }
         cout<<endl;
     }
+    cout<<endl;
 }
 
 int bfs(int sy, int sx, int input_map[][5], int state){
@@ -143,13 +144,13 @@ void adventure(){
                         result_y = i, result_x = j;
                     }
                     else if(k == max_rotate){
-                        if(i<result_y){
+                        if(j<result_y){
                             max_value = tmp_val;
                             max_rotate = k;
                             result_y = i, result_x = j;
                         }
-                        else if(i == result_y){
-                            if(j<result_x){
+                        else if(j == result_y){
+                            if(i<result_x){
                                 max_value = tmp_val;
                                 max_rotate = k;
                                 result_y = i, result_x = j;
@@ -168,6 +169,9 @@ void adventure(){
     int real_tmp = rotate(result_y,result_x,max_rotate,1);
     int result = real_tmp;
 
+    // cout_map();
+    
+
     //벽면 채우기
     for(int i=0; i<5; ++i){
         for(int j=4; j>=0; --j){
@@ -178,9 +182,16 @@ void adventure(){
         }
     }
 
+    // cout_map();
+
     while(real_tmp != 0){
         real_tmp = rotate(result_y,result_x,0,1);
         result += real_tmp;
+
+
+        // cout_map();
+
+
         //벽면 채우기
         for(int i=0; i<5; ++i){
             for(int j=4; j>=0; --j){
@@ -192,7 +203,10 @@ void adventure(){
         }
     }
 
+    // cout_map();
+
     cout<<result<<" ";
+    // cout<<result<<endl;
 
     return;
 }
