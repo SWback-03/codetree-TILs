@@ -144,18 +144,23 @@ void adventure(){
                         result_y = i, result_x = j;
                     }
                     else if(k == max_rotate){
-                        if(j<result_y){
+                        if(j<result_x){
                             max_value = tmp_val;
                             max_rotate = k;
                             result_y = i, result_x = j;
                         }
-                        else if(j == result_y){
-                            if(i<result_x){
+                        else if(j == result_x){
+                            if(i<result_y){
                                 max_value = tmp_val;
                                 max_rotate = k;
                                 result_y = i, result_x = j;
                             }
-                            else break;
+                            // else continue;
+                            // // else{
+                            // //     max_value = tmp_val;
+                            // //     max_rotate = k;
+                            // //     result_y = i, result_x = j;
+                            // // }
                         }
                     }
                 }
@@ -164,6 +169,8 @@ void adventure(){
     }
 
     if(max_value == 0) return;
+
+    // cout<<result_y+1<<","<<result_x+1<<","<<max_rotate<<endl;
 
     //출력
     int real_tmp = rotate(result_y,result_x,max_rotate,1);
@@ -188,9 +195,7 @@ void adventure(){
         real_tmp = rotate(result_y,result_x,0,1);
         result += real_tmp;
 
-
         // cout_map();
-
 
         //벽면 채우기
         for(int i=0; i<5; ++i){
@@ -207,6 +212,7 @@ void adventure(){
 
     cout<<result<<" ";
     // cout<<result<<endl;
+    // cout<<result<<","<<result_y+1<<","<<result_x+1<<","<<max_rotate<<endl;
 
     return;
 }
