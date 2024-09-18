@@ -78,15 +78,17 @@ void back_push(int santa_num, int dir_num, string pushed_obj){
         santa[santa_num].y = santa[santa_num].y + C * rudolf_dy[dir_num];
         santa[santa_num].x = santa[santa_num].x + C * rudolf_dx[dir_num];
         santa[santa_num].score += C;
+        santa[santa_num].stun_time = 2;
     }
     else{ //산타가 시작
         dir_num = (dir_num + 2)%4;
         santa[santa_num].y = santa[santa_num].y + D * rudolf_dy[dir_num];
         santa[santa_num].x = santa[santa_num].x + D * rudolf_dx[dir_num];
         santa[santa_num].score += D;
+        santa[santa_num].stun_time = 1;
     }
 
-    santa[santa_num].stun_time = 2;
+    // santa[santa_num].stun_time = 2;
 
     if(check_falling(santa_num)) santa[santa_num].fall = true;
 
@@ -200,10 +202,6 @@ void move_santa(){
             }
         }
 
-        // if(check_collide(i)){ //충돌했을 때
-        //     back_push(i, santa_dir, "santa");
-        // }
-
         if(enable){
             // cout<<"santa_dir,min_dist:"<<santa_dir<<","<<min_dist<<endl;
             santa[i].y = santa[i].y + santa_dy[santa_dir];
@@ -223,12 +221,10 @@ void move_santa(){
 void run(){
     move_rudolf();
 
-    // cout<<"rudolf_move"<<endl;
     // print_position();
 
     move_santa();
 
-    // cout<<"santa_move"<<endl;
     // print_position();
 
     return;
