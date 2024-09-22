@@ -73,7 +73,7 @@ int bfs(int input_y, int input_x){
             int nx = x + ball_dx[i];
 
             if(ny<0 || nx<0 || ny >= n || nx >= n) continue;
-            if(visited[ny][nx]>0 || map[ny][nx] == 4 || map[ny][nx] == 0) continue;
+            if(visited[ny][nx]>0 || map[ny][nx] == 4 || map[ny][nx] == 0 || map[ny][nx] == 3) continue;
 
             q.push(make_pair(ny,nx));
             visited[ny][nx] = visited[y][x] + 1;
@@ -208,7 +208,11 @@ void run(){
         // ball_sx = tmp_pair.second;
 
         result += (dist*dist);
+
+        // cout<<"result:"<<result<<endl;
     }
+
+    // print_map();
 
     cout<<result;
 
