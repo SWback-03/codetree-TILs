@@ -64,16 +64,21 @@ int bfs(int input_y, int input_x){
             head_y = y, head_x = x;
         }
 
-        if(map[y][x] == 3){
-            tail_y = y, tail_x = x;
-        }
+        // if(map[y][x] == 3){
+        //     tail_y = y, tail_x = x;
+        // }
 
         for(int i=0; i<4; ++i){
             int ny = y + ball_dy[i];
             int nx = x + ball_dx[i];
 
+            if(map[ny][nx] == 3){
+                tail_y = ny, tail_x = nx;
+            }
+
             if(ny<0 || nx<0 || ny >= n || nx >= n) continue;
             if(visited[ny][nx]>0 || map[ny][nx] == 4 || map[ny][nx] == 0 || map[ny][nx] == 3) continue;
+            if(map[y][x] == 3 && map[ny][nx] == 1) continue;
 
             q.push(make_pair(ny,nx));
             visited[ny][nx] = visited[y][x] + 1;
@@ -183,9 +188,6 @@ void run(){
         // cout<<ball_sy<<","<<ball_sx<<endl;
         // print_map();
 
-        // int ball_dir = (i / n) % 4;
-        // int dist = 0;
-
         int ball_y = ball_sy;
         int ball_x = ball_sx;
 
@@ -202,11 +204,7 @@ void run(){
             ball_y += ball_dy[ball_dir];
             ball_x += ball_dx[ball_dir];
         }
-
-        // pair<int,int> tmp_pair = find_ball(i, ball_dir, ball_sy, ball_sx);
-        // ball_sy = tmp_pair.first;
-        // ball_sx = tmp_pair.second;
-
+        // cout<<ball_sy<<","<<ball_sx<<","<<dist<<endl;
         result += (dist*dist);
 
         // cout<<"result:"<<result<<endl;
