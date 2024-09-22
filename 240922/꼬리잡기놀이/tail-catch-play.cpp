@@ -24,19 +24,25 @@ void print_map(){
     return;
 }
 
-pair<int,int> find_ball(int ball_dir, int ball_sy, int ball_sx){
+pair<int,int> find_ball(int i, int ball_dir, int ball_sy, int ball_sx){
     if(ball_dir == 0){
-        ball_sy++;
+        ball_sy = i%n;
+        ball_sx = 0;
     }
     else if(ball_dir == 1){
-        ball_sx++;
+        ball_sy = n-1;
+        ball_sx = i%n;
     }
     else if(ball_dir == 2){
-        ball_sy--;
+        ball_sy = n-i%n-1;
+        ball_sx = n-1;
     }
     else{
-        ball_sx--;
+        ball_sy = 0;
+        ball_sx = n-i%n-1;
     }
+
+    // cout<<ball_sy<<","<<ball_sx<<","<<ball_dir<<endl;
 
     return make_pair(ball_sy, ball_sx);
 }
@@ -167,10 +173,18 @@ void run(){
     for(int i=0; i<k; ++i){
         move_person();
 
-        // print_map();
-
         int ball_dir = (i / n) % 4;
         int dist = 0;
+
+        pair<int,int> tmp_pair = find_ball(i, ball_dir, ball_sy, ball_sx);
+        ball_sy = tmp_pair.first;
+        ball_sx = tmp_pair.second;
+
+        // cout<<ball_sy<<","<<ball_sx<<endl;
+        // print_map();
+
+        // int ball_dir = (i / n) % 4;
+        // int dist = 0;
 
         int ball_y = ball_sy;
         int ball_x = ball_sx;
@@ -189,9 +203,9 @@ void run(){
             ball_x += ball_dx[ball_dir];
         }
 
-        pair<int,int> tmp_pair = find_ball(ball_dir, ball_sy, ball_sx);
-        ball_sy = tmp_pair.first;
-        ball_sx = tmp_pair.second;
+        // pair<int,int> tmp_pair = find_ball(i, ball_dir, ball_sy, ball_sx);
+        // ball_sy = tmp_pair.first;
+        // ball_sx = tmp_pair.second;
 
         result += (dist*dist);
     }
