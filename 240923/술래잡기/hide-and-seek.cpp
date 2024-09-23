@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <queue>
+#include <stack>
 
 #define MAX_N 100
 #define MAX_M 10000
@@ -13,12 +15,15 @@ struct thief{
     int dir;
 };
 
+queue<int> dist_q;
+
 int N,M,H,K;
 vector<int> person_map[MAX_N][MAX_N];
 int tree_map[MAX_N][MAX_N] = {0,};
 vector<thief> person(MAX_M);
 bool visited_person[MAX_M] = {false,};
 
+int init_y, init_x;
 int cap_y, cap_x;
 
 int dy[4] = {-1,0,1,0};
@@ -41,11 +46,21 @@ void print_person_map(){
                 continue;
             }
 
-            bool doing = true;
-            for(auto element : person_map[i][j]){
-                cout<<element+1<<" ";
-                doing = false;
+            if(tree_map[i][j] == 1){
+                cout<<"T ";
+                continue;
             }
+
+            bool doing = true;
+            if(person_map[i][j].size()>0){
+                cout<<"(";
+                for(auto element : person_map[i][j]){
+                    cout<<element+1<<",";
+                    doing = false;
+                }
+                cout<<")";
+            }
+
             if(doing) cout<<"0 ";
         }
         cout<<endl;
@@ -102,47 +117,95 @@ void move_person(){
         person_map[ny][nx].push_back(i);
     }
 
-    // print_person_map();
+    return;
+}
+
+pair<int,int> find_dist(bool updown){
+    
+    int tmp = dist_q.front();
+    dist_q.pop();
+
+    if(dist_q.empty()){
+        if(tmp+1 == N && updown){
+            for(int i=0; i<(tmp)*6; ++i){
+                dist_q.push(tmp);
+                updown = false;
+            }
+        }
+        else if(tmp - 1 == 0 && updown == false){
+            for(int i=0; i<(tmp)*4; ++i){
+                dist_q.push(tmp);
+                updown = true;
+            }
+        }
+        else{
+            for(int i=0; i<(tmp+1)*2; ++i){
+                if(updown)
+                    dist_q.push(tmp+1);
+                else
+                    dist_q.push(tmp-1);
+            }
+        }
+
+    }
+
+    return make_pair(tmp,updown);
+
+}
+
+bool visited[MAX_N][MAX_N] = {false,};
+
+void clear_visited(){
+    for(int i=0; i<N; ++i){
+        for(int j=0; j<N; ++j){
+            visited[i][j] = false;
+        }
+    }
 
     return;
 }
 
-pair<int,int> find_dist(int count, int dist, bool updown){
-
-    if(count%2 == 0){
-        if(updown == true){
-            dist++;
-            if(dist == N){
-                dist--;
-                updown = false;
-            }
-        }
-        else{
-            dist--;
-            if(dist == 0){
-                dist++;
-                updown = true;
-            }
-        }
-    }
-
-    return make_pair(dist, updown);
-}
-
-pair<int,int> move_cap(int curr, int dist, int cap_dir){
-
-    if(curr == dist){
-        curr = 0;
-        cap_dir = (cap_dir+1)%4;
-    }
-
+pair<int,int> move_cap(bool updown, int cap_dir){
+    
     cap_y += dy[cap_dir];
     cap_x += dx[cap_dir];
 
-    curr++;
+    int cap_ny = cap_y + dy[(cap_dir+1)%4];
+    int cap_nx = cap_x + dx[(cap_dir+1)%4];
 
-    return make_pair(curr, cap_dir);
+    if(!updown){
+        cap_ny = cap_y + dy[cap_dir];
+        cap_nx = cap_x + dx[cap_dir];
+        if(cap_y == init_y && cap_x == init_x){
+            clear_visited();
+            cap_dir = (cap_dir+2)%4;
+            updown = true;
+        }
+        else if(cap_ny<0 || cap_nx<0 || cap_ny>=N || cap_nx>=N){
+            int tmp_dir = (cap_dir-1)%4;
+            if(tmp_dir == -1) tmp_dir = 3;
+            cap_dir = tmp_dir;
+        }
+        else if(visited[cap_ny][cap_nx]){
+            int tmp_dir = (cap_dir-1)%4;
+            if(tmp_dir == -1) tmp_dir = 3;
+            cap_dir = tmp_dir;
+        }
+    }
+    else if(updown && (visited[cap_ny][cap_nx] == false || (cap_y == 0 && cap_x == 0))){
+        if(cap_y == 0 && cap_x == 0){
+            clear_visited();
+            cap_dir = (cap_dir+2)%4;
+            updown = false;
+        }
+        else{
+            cap_dir = (cap_dir+1)%4;
+        }
+    }
+    
+    return make_pair(updown,cap_dir);
 }
+
 
 bool check_boundry(int input_y, int input_x){
     if(input_y<0 || input_x<0 || input_y>=N || input_x>=N) return false;
@@ -156,7 +219,8 @@ int check_map_person(int cap_dir){
 
     int get_count = 0;
 
-    while(check_boundry(cap_ny,cap_nx)){
+    // while(check_boundry(cap_ny,cap_nx)){
+    for(int i=0; i<3; ++i){
         if(tree_map[cap_ny][cap_nx] == 1){
             cap_ny += dy[cap_dir];
             cap_nx += dx[cap_dir];
@@ -183,24 +247,25 @@ void run(){
     int curr = 0;
     int cap_dir = 0;
 
-    
+    visited[init_y][init_x] = true;
 
     for(int i=0; i<K; ++i){
         move_person();
 
-        pair<int,int> tmp_pair_1 = find_dist(i, dist, updown);
-        dist = tmp_pair_1.first;
-        updown = tmp_pair_1.second;
+        visited[cap_y][cap_x] = true;
 
-        // cout<<dist<<"/"<<updown<<endl;
-
-        pair<int,int> tmp_pair_2 = move_cap(curr, dist, cap_dir);
-        curr = tmp_pair_2.first;
+        
+        pair<int,int> tmp_pair_2 = move_cap(updown, cap_dir);
+        updown = tmp_pair_2.first;
         cap_dir = tmp_pair_2.second;
 
-        int get_count = check_map_person((cap_dir+1)%4);
+        // cout<<cap_y+1<<","<<cap_x+1<<","<<updown<<","<<cap_dir<<endl;
 
-        // cout<<"get_count:"<<get_count<<"count:"<<i<<endl;
+        // cout<<"curr:"<<curr<<endl<<endl;
+
+        int get_count = check_map_person(cap_dir%4);
+
+        // cout<<"get_count:"<<get_count<<" count:"<<i+1<<" dir:"<<cap_dir<<endl;
 
         // print_person_map();
 
@@ -212,6 +277,9 @@ void run(){
 
 void find_cap_pos(){
     cap_y = N/2, cap_x = N/2;
+
+    init_y = cap_y;
+    init_x = cap_x;
     return;
 }
 
@@ -228,6 +296,10 @@ int main() {
         int tmp_y, tmp_x;
         cin>>tmp_y>>tmp_x;
         tree_map[tmp_y-1][tmp_x-1] = 1;
+    }
+
+    for(int i=0; i<2; ++i){
+        dist_q.push(1);
     }
 
     find_cap_pos();
