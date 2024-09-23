@@ -99,6 +99,9 @@ void move_person(){
         if(ny<0 || nx<0 || ny>=N || nx>=N){
             ndir = (ndir+2)%4;
             person[i].dir = ndir;
+            ny = person[i].y + dy[ndir];
+            nx = person[i].x + dx[ndir];
+            if(ny == cap_y && nx ==cap_x) continue;
             person[i].y += dy[ndir];
             person[i].x += dx[ndir];
         }
