@@ -178,6 +178,7 @@ int clean_do(int i_y, int i_x){
             
         }
     }
+    if(cleaned_tree == -1) return 0;
 
     return cleaned_tree;
 }
@@ -234,7 +235,7 @@ void run(){
         // print_map();
 
         total_cleaned_trees += clean_pos();
-
+        // cout<<"total:"<<total_cleaned_trees<<endl;
         clean_did();
 
         // print_map();
