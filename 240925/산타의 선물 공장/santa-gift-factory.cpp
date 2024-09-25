@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include <unordered_map>
 
 #define MAX_M 100000
 using namespace std;
@@ -13,6 +14,25 @@ struct box{
 vector<box> present[MAX_M];
 bool broken_rail_visited[MAX_M] = {false,};
 int q, n, m;
+
+unordered_map<int,int> u_map; //id, rail_num
+
+// bool index_check(int index, int d_id){
+//     for(auto element : present[index]){
+//         if(element.id == d_id) return true;
+//     }
+//     return false;
+// }
+
+// bool binary_search(int index, int d_id){
+//     if(index_check(index, d_id)) return true;
+
+//     else{
+//         binary_search((index))
+//     }
+
+//     return false;
+// }
 
 void print_rail(){
     for(int i=0; i<m; ++i){
@@ -44,6 +64,8 @@ void build_factory(){
     int rail_num = 0;
     for(int i=0; i<n; ++i){
         present[rail_num].push_back({id_q.front(), weight_q.front()});
+        //hash
+        u_map.insert(make_pair(id_q.front(), rail_num));
         id_q.pop();
         weight_q.pop();
         if(i%rail_count == rail_count-1){
@@ -79,8 +101,10 @@ int delete_present(){
     int r_id;
     cin>>r_id;
 
-    for(int i=0; i<m; ++i){
-        if(present[i].size() <= 0) continue;
+    int i = u_map[r_id];
+
+    // for(int i=0; i<m; ++i){
+        // if(present[i].size() <= 0) continue;
 
         int count = 0;
         for(auto element : present[i]){
@@ -90,7 +114,7 @@ int delete_present(){
             }
             count++;
         }
-    }
+    // }
 
     return -1;
 }
@@ -99,8 +123,10 @@ int check_present(){
     int f_id;
     cin>>f_id;
 
-    for(int i=0; i<m; ++i){
-        if(present[i].size() <= 0) continue;
+    int i = u_map[f_id];
+
+    // for(int i=0; i<m; ++i){
+        // if(present[i].size() <= 0) continue;
 
         int count = 0;
         queue<box> tmp_q;
@@ -121,7 +147,7 @@ int check_present(){
 
             count++;
         }
-    }
+    // }
 
     return -1;
 }
@@ -145,6 +171,7 @@ int broken_rail(){
         if(broken_rail_visited[i] == false){
             while(!tmp_q.empty()){
                 present[i].push_back({tmp_q.front().id, tmp_q.front().weight});
+                u_map[tmp_q.front().id] = i;
                 tmp_q.pop();
             }
             return b_num+1;
