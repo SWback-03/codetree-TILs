@@ -45,7 +45,7 @@ void print_map(){
         map[element.y][element.x] = 1;
     }
     // map[r][c] = 2;
-
+    cout<<"r,c:"<<r+1<<","<<c+1<<endl;
     for(int i=0; i<4; ++i){
         for(int j=0; j<4; ++j){
             cout<<map[i][j]<<" ";
@@ -96,8 +96,31 @@ void monster_move(){
     return;
 }
 
+// int check_eating_count(int i_y, int i_x){
+//     int count = 0;
+//     for(auto element : monster){
+//         if(element.egg == false || element.condition<=0) continue;
+
+//         if(element.y == i_y && element.x == i_x) count++;
+//     }
+//     return count;
+// }
+
+bool visited[4][4] = {false,};
+
+void clear_visited(){
+    for(int i=0; i<4; ++i){
+        for(int j=0; j<4; ++j){
+            visited[i][j] = false;
+        }
+    }
+    return;
+}
+
 int check_eating_count(int i_y, int i_x){
     int count = 0;
+    if(visited[i_y][i_x]) return count;
+    visited[i_y][i_x] = true;
     for(auto element : monster){
         if(element.egg == false || element.condition<=0) continue;
 
@@ -123,8 +146,55 @@ void kill_moster(int *pos){
     return;
 }
 
+// void pacman_move(){
+//     bool visited[4][4] = {false,};
+//     int eating_count = 0;
+//     int new_r, new_c;
+
+//     bool enable = false;
+//     int pos[6] = {0,};
+
+//     for(int i=0; i<8; i+=2){
+//         int first_ny = r + dy[i];
+//         int first_nx = c + dx[i];
+//         if(first_ny<0 || first_nx<0 || first_ny>=4 || first_nx>=4 || visited[first_ny][first_nx]) continue;
+//         visited[first_ny][first_nx] = true;
+//         for(int j=0; j<8; j+=2){
+//             int second_ny = first_ny + dy[j];
+//             int second_nx = first_nx + dx[j];
+//             if(second_ny<0 || second_nx<0 || second_ny>=4 || second_nx>=4 || visited[second_ny][second_nx]) continue;
+//             visited[second_ny][second_nx] = true;
+//             for(int k=0; k<8; k+=2){
+//                 int third_ny = second_ny + dy[k];
+//                 int third_nx = second_nx + dx[k];
+//                 if(third_ny<0 || third_nx<0 || third_ny>=4 || third_nx>=4 || visited[third_ny][third_nx]) continue;
+//                 visited[third_ny][third_nx] = true;
+
+//                 int tmp = 0;
+//                 tmp+=check_eating_count(first_ny,first_nx);
+//                 tmp+=check_eating_count(second_ny,second_nx);
+//                 tmp+=check_eating_count(third_ny,third_nx);
+
+//                 if(tmp>eating_count){
+//                     eating_count =tmp;
+//                     enable = true;
+//                     pos[0] = first_ny;
+//                     pos[1] = first_nx;
+//                     pos[2] = second_ny;
+//                     pos[3] = second_nx;
+//                     pos[4] = third_ny;
+//                     pos[5] = third_nx;
+//                     new_r = third_ny, new_c = third_nx;
+//                 }
+
+//                 visited[third_ny][third_nx] = false;
+//             }
+//             visited[second_ny][second_nx] = false;
+//         }
+//         visited[first_ny][first_nx] = false;
+//     }
+
 void pacman_move(){
-    bool visited[4][4] = {false,};
     int eating_count = 0;
     int new_r, new_c;
 
@@ -134,20 +204,19 @@ void pacman_move(){
     for(int i=0; i<8; i+=2){
         int first_ny = r + dy[i];
         int first_nx = c + dx[i];
-        if(first_ny<0 || first_nx<0 || first_ny>=4 || first_nx>=4 || visited[first_ny][first_nx]) continue;
-        visited[first_ny][first_nx] = true;
+        if(first_ny<0 || first_nx<0 || first_ny>=4 || first_nx>=4) continue;
         for(int j=0; j<8; j+=2){
             int second_ny = first_ny + dy[j];
             int second_nx = first_nx + dx[j];
-            if(second_ny<0 || second_nx<0 || second_ny>=4 || second_nx>=4 || visited[second_ny][second_nx]) continue;
-            visited[second_ny][second_nx] = true;
+            if(second_ny<0 || second_nx<0 || second_ny>=4 || second_nx>=4) continue;
             for(int k=0; k<8; k+=2){
                 int third_ny = second_ny + dy[k];
                 int third_nx = second_nx + dx[k];
-                if(third_ny<0 || third_nx<0 || third_ny>=4 || third_nx>=4 || visited[third_ny][third_nx]) continue;
-                visited[third_ny][third_nx] = true;
+                if(third_ny<0 || third_nx<0 || third_ny>=4 || third_nx>=4) continue;
 
                 int tmp = 0;
+                clear_visited();
+
                 tmp+=check_eating_count(first_ny,first_nx);
                 tmp+=check_eating_count(second_ny,second_nx);
                 tmp+=check_eating_count(third_ny,third_nx);
@@ -163,12 +232,8 @@ void pacman_move(){
                     pos[5] = third_nx;
                     new_r = third_ny, new_c = third_nx;
                 }
-
-                visited[third_ny][third_nx] = false;
             }
-            visited[second_ny][second_nx] = false;
         }
-        visited[first_ny][first_nx] = false;
     }
 
     if(enable){
