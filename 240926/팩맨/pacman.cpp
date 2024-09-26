@@ -44,7 +44,7 @@ void print_map(){
         }
         map[element.y][element.x] = 1;
     }
-    map[r][c] = 2;
+    // map[r][c] = 2;
 
     for(int i=0; i<4; ++i){
         for(int j=0; j<4; ++j){
@@ -58,6 +58,7 @@ void print_map(){
 void copy_start(){
     int count = monster.size();
     for(int i=0; i<count; ++i){
+        //죽거나 알 제외
         if(monster[i].egg == false || monster[i].condition<=0) continue;
         monster.push_back({monster[i].y,monster[i].x,monster[i].dir,false,1});
     }
@@ -67,9 +68,10 @@ void copy_start(){
 bool check_pacman_dead_monster(int i_y, int i_x){
     if(i_y == r && i_x == c) return false;
     for(auto element : monster){
-        if(element.egg == false) continue;
-
-        if(element.condition<=0 && element.y == i_y && element.x == i_x) return false;
+        // if(element.egg == false) continue;
+        if(element.egg == false || element.condition<0){
+            if(element.condition<=0 && element.y == i_y && element.x == i_x) return false;
+        }
     }
     return true;
 }
@@ -77,7 +79,7 @@ bool check_pacman_dead_monster(int i_y, int i_x){
 void monster_move(){
     int count = monster.size();
     for(int i=0; i<count; ++i){
-        if(monster[i].egg == false || monster[i].condition<0) continue;
+        if(monster[i].egg == false || monster[i].condition<=0) continue;
         
         for(int j=0; j<8; ++j){
             int ny = monster[i].y + dy[(monster[i].dir + j)%8];
