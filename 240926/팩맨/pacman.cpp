@@ -19,6 +19,26 @@ int monster_count[4][4] = {0,};  // 각 좌표에 있는 몬스터 수를 기록
 bool visited[4][4] = {false,};
 int dead[4][4] = {0,};  // 몬스터 시체를 기록 (2턴 동안 유지됨)
 
+void print_map(){
+    int map[4][4] = {0,};
+    for(auto element : monster){
+        if(element.egg == false || element.condition<0) continue;
+        if(element.condition == 0){
+            map[element.y][element.x] = 4;
+            continue;
+        }
+        map[element.y][element.x] = 1;
+    }
+    cout<<"r,c:"<<r+1<<","<<c+1<<endl;
+    for(int i=0; i<4; ++i){
+        for(int j=0; j<4; ++j){
+            cout<<map[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
 // 몬스터 수를 초기화
 void init_monster_count() {
     memset(monster_count, 0, sizeof(monster_count));  // 배열 초기화
@@ -104,6 +124,28 @@ void pacman_move() {
         r = new_r;
         c = new_c;
     }
+    else{
+        for (int i = 0; i < 8; i += 2) {
+            int first_ny = r + dy[i];
+            int first_nx = c + dx[i];
+            if (first_ny < 0 || first_nx < 0 || first_ny >= 4 || first_nx >= 4) continue;
+            for (int j = 0; j < 8; j += 2) {
+                int second_ny = first_ny + dy[j];
+                int second_nx = first_nx + dx[j];
+                if (second_ny < 0 || second_nx < 0 || second_ny >= 4 || second_nx >= 4) continue;
+                for (int k = 0; k < 8; k += 2) {
+                    int third_ny = second_ny + dy[k];
+                    int third_nx = second_nx + dx[k];
+                    if (third_ny < 0 || third_nx < 0 || third_ny >= 4 || third_nx >= 4) continue;
+                    
+                    r = third_ny; c = third_nx;
+                    return;
+                }
+            }
+        }
+    }
+
+    return;
 }
 
 // 몬스터를 이동시킴
@@ -152,10 +194,15 @@ void copy_complete() {
 void run() {
     for (int i = 0; i < t; ++i) {
         copy_start();   // 몬스터 복제 시도
+        // print_map();
         monster_move(); // 몬스터 이동
+        // print_map();
         pacman_move();  // 팩맨 이동
+        // print_map();
         dead_monster(); // 몬스터 시체 소멸
+        // print_map();
         copy_complete(); // 몬스터 복제 완료
+        // print_map();
     }
 }
 
