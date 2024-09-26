@@ -44,7 +44,7 @@ void print_map(){
         }
         map[element.y][element.x] = 1;
     }
-    // map[r][c] = 2;
+    map[r][c] = 2;
 
     for(int i=0; i<4; ++i){
         for(int j=0; j<4; ++j){
@@ -87,6 +87,7 @@ void monster_move(){
 
             monster[i].y = ny;
             monster[i].x = nx;
+            monster[i].dir += j;
             break;
         }
     }
