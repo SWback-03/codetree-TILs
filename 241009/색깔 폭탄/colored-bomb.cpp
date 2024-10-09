@@ -53,16 +53,28 @@ void clear_red_visited(){
 
 pair<int,int> find_condition(vector<pair<int,int>> input_vec){
     sort(input_vec.begin(), input_vec.end());
-    int max_y = input_vec[0].first;
-    int min_x = input_vec[0].second;
+    // int max_y = input_vec[0].first;
+    // int min_x = input_vec[0].second;
+    int max_y = -1;
+    int min_x = n+1;
     for(auto element : input_vec){
         if(map[element.first][element.second] == 0) continue;
-        if(element.first >= max_y && element.second < min_x){
+        // if(element.first >= max_y && element.second < min_x){
+        //     max_y = element.first;
+        //     min_x = element.second;
+        // }
+        if(element.first > max_y){
             max_y = element.first;
             min_x = element.second;
         }
+        else if(element.first == max_y){
+            if(element.second < min_x){
+                max_y = element.first;
+                min_x = element.second;
+            }
+        }
     }
-
+    // cout<<"y,x:"<<max_y<<","<<min_x<<endl;
     return make_pair(max_y, min_x);
 }
 
@@ -72,7 +84,7 @@ bool check(){
 
     for(int i=0; i<n; ++i){
         for(int j=0; j<n; ++j){
-            if(map[i][j]<0) continue;
+            if(map[i][j]<=0) continue;
             int tmp_count = 1;
             for(int k=0; k<4; ++k){
                 int y = i + dy[k];
@@ -91,13 +103,13 @@ bool check(){
 
 int whole_dfs(){
 
-    int max_val = 0, red_count = 0, max_y, max_x;
+    int max_val = 0, red_count = 0, max_y = 0, max_x = n+1;
     vector<pair<int,int>> result_vec;
     memset(visited,false,sizeof(visited));
     
     for(int i=0; i<n; ++i){
         for(int j=0; j<n; ++j){
-            if(visited[i][j] || map[i][j] < 0) continue;
+            if(visited[i][j] || map[i][j] <= 0) continue;
             queue<pair<int,int>> tmp_q;
             vector<pair<int,int>> tmp_vec;
             int tmp_red_count = 0;
@@ -125,26 +137,28 @@ int whole_dfs(){
                     }
                 }
             }
+            pair<int,int> tmp_pair = find_condition(tmp_vec);
             if(tmp_vec.size() > max_val){
                 max_val = tmp_vec.size();
                 red_count = tmp_red_count;
-                max_y = i, max_x = j;
+                max_y = tmp_pair.first, max_x = tmp_pair.second;
                 result_vec = tmp_vec;
             }
             else if(tmp_vec.size() == max_val){
                 if(tmp_red_count < red_count){
                     red_count = tmp_red_count;
-                    max_y = i, max_x = j;
+                    max_y = tmp_pair.first, max_x = tmp_pair.second;
                     result_vec = tmp_vec;
                 }
                 else if(tmp_red_count == red_count){
-                    pair<int,int> tmp_pair = find_condition(tmp_vec);
+                    // cout<<"i,j:"<<i<<","<<j<<endl;
+                    // pair<int,int> tmp_pair = find_condition(tmp_vec);
                     if(max_y < tmp_pair.first){
-                        max_y = i, max_x = j;
+                        max_y = tmp_pair.first, max_x = tmp_pair.second;
                         result_vec = tmp_vec;
                     }
                     else if(max_y == tmp_pair.first && max_x > tmp_pair.second){
-                        max_y = i, max_x = j;
+                        max_y = tmp_pair.first, max_x = tmp_pair.second;
                         result_vec = tmp_vec;
                     }
                 }
