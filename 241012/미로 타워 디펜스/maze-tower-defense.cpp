@@ -158,7 +158,7 @@ void longer(){
 
     }
 
-    for(int i=0; i<n*n; ++i){
+    for(int i=0; i<MAX_N * MAX_N; ++i){
         arr[i].val = 0;
     }
     for(int i=0; i<tmp_vec.size(); ++i){
