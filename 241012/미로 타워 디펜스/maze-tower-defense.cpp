@@ -38,8 +38,6 @@ void attack(int d, int p){
         int y = mid_y + i * dy[d];
         int x = mid_x + i * dx[d];
         if(map[y][x]>0) total_val += map[y][x];
-        // cout<<"d,p:"<<d<<","<<p<<endl;
-        // cout<<"deleted:"<<map[y][x]<<endl;
         map[y][x] = 0;
     }
     return;
@@ -79,7 +77,6 @@ void make_arr(){
         for(int i=0; i<count; ++i){
             cur_y = cur_y + dy[index];
             cur_x = cur_x + dx[index];
-            // cout<<cur_y<<","<<cur_x<<endl;
             arr[arr_count] = {map[cur_y][cur_x],cur_y,cur_x};
             arr_count++;
         }
@@ -116,9 +113,7 @@ bool repeat(){
         else{
             if(repeat_count >= 4){
                 for(int j = 1; j<=repeat_count; ++j){
-                    // if(arr[i-j].val > 1000) cout<<"!!!!!!!!"<<arr[n*n-2-j].val<<endl;
                     total_val += arr[i-j].val;
-                    // cout<<"deleted:"<<arr[i-j].val<<endl;
                     arr[i-j].val = 0;
                 }
                 enable = true;
@@ -130,7 +125,6 @@ bool repeat(){
 
     if(repeat_count >= 4){
         for(int j = 0; j<repeat_count; ++j){
-            // if(arr[n*n-2-j].val > 100) cout<<"!!!!!!!!"<<arr[n*n-2-j].val<<endl;
             total_val += arr[n*n-2-j].val;
             arr[n*n-2-j].val = 0;
         }
@@ -147,7 +141,6 @@ void longer(){
     vector<int> tmp_vec;
 
     for(int i=1; i<n*n-1; ++i){
-        // if(arr[i].val == 0) break;
         int prev_val = cur_val;
         cur_val = arr[i].val;
 
@@ -165,7 +158,6 @@ void longer(){
         arr[i].val = 0;
     }
     int tmp_size = tmp_vec.size();
-    // cout<<"tmp:"<<tmp_size<<endl;
     int tmp_limit = min(tmp_size,MAX_N * MAX_N);
     for(int i=0; i<tmp_limit; ++i){
         arr[i].val = tmp_vec[i];
@@ -185,7 +177,6 @@ void roll_back(){
     for(int i=0; i<n*n-1; ++i){
         tmp_map[arr[i].map_y][arr[i].map_x] = arr[i].val;
     }
-    // map = tmp_map;
 
     for(int i=0; i<n; ++i){
         for(int j=0; j<n; ++j){
@@ -214,75 +205,21 @@ void run(int d, int p){
 
     attack(d,p);
 
-    // print_map();
-
     make_arr();
-
-    // cout<<total_val<<endl;
-
-    // if(d==1 && p ==3){
-        // for(int i=0; i<n*n-1; ++i){
-        //     if(arr[i].val < 0) cout<<arr[i].val<<" ";
-        //     // cout<<arr[i].val<<" ";
-        // }
-        // cout<<endl;
-    // }
-
-    // if(d==1 && p ==3){
-    //     print_map();
-    // }
 
     while(1){
         shorten();
 
-        // cout<<total_val<<endl;
-
-        // if((d==1 && p ==3)){
-        //     for(int i=0; i<n*n-1; ++i){
-        //         cout<<arr[i].val<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // cout<<"run\n";
-
         if(!repeat()) break;
     }
-    // cout<<"before longer\n";
-    // cout<<total_val<<endl;
-
-    // if((d==2 && p ==2)){
-    //         for(int i=0; i<n*n-1; ++i){
-    //             cout<<arr[i].val<<" ";
-    //         }
-    //         cout<<endl;
-    //     }
 
     longer();
-    // cout<<"after longer\n";
-    // cout<<total_val<<endl;
-
-    // if((d==2 && p ==2)){
-    //         for(int i=0; i<n*n-1; ++i){
-    //             cout<<arr[i].val<<" ";
-    //         }
-    //         cout<<endl;
-    //     }
 
     roll_back();
-    // cout<<"after rollback\n";
-    
-
-    // if(d==0 && p ==4){
-    //     print_map();
-    // }
-
-    // print_map();
-
-    // cout<<total_val<<endl;
 
 }
 
-int main() {
+int main() {q
 
     cin>>n>>m;
     for(int i=0; i<n; ++i){
