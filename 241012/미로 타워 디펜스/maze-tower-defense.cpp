@@ -219,7 +219,7 @@ void run(int d, int p){
 
 }
 
-int main() {q
+int main() {
 
     cin>>n>>m;
     for(int i=0; i<n; ++i){
