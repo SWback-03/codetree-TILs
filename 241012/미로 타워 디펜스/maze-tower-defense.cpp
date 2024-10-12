@@ -154,6 +154,10 @@ void longer(){
         arr[i].val = tmp_vec[i];
     }
 
+    for(int i=n*n-1; i<MAX_N; ++i){
+        arr[i].val = 0;
+    }
+
     return;
 }
 
@@ -168,7 +172,16 @@ void roll_back(){
     return;
 }
 
+void clear_arr(){
+    for(int i=0; i<MAX_N*MAX_N; ++i){
+        arr[i].val = 0;
+    }
+    return;
+}
+
 void run(int d, int p){
+    clear_arr();
+
     attack(d,p);
 
     make_arr();
