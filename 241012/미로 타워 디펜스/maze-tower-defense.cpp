@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #define MAX_N 26
 using namespace std;
@@ -115,6 +116,7 @@ bool repeat(){
         else{
             if(repeat_count >= 4){
                 for(int j = 1; j<=repeat_count; ++j){
+                    // if(arr[i-j].val > 1000) cout<<"!!!!!!!!"<<arr[n*n-2-j].val<<endl;
                     total_val += arr[i-j].val;
                     // cout<<"deleted:"<<arr[i-j].val<<endl;
                     arr[i-j].val = 0;
@@ -128,6 +130,7 @@ bool repeat(){
 
     if(repeat_count >= 4){
         for(int j = 0; j<repeat_count; ++j){
+            // if(arr[n*n-2-j].val > 100) cout<<"!!!!!!!!"<<arr[n*n-2-j].val<<endl;
             total_val += arr[n*n-2-j].val;
             arr[n*n-2-j].val = 0;
         }
@@ -161,7 +164,10 @@ void longer(){
     for(int i=0; i<MAX_N * MAX_N; ++i){
         arr[i].val = 0;
     }
-    for(int i=0; i<tmp_vec.size(); ++i){
+    int tmp_size = tmp_vec.size();
+    // cout<<"tmp:"<<tmp_size<<endl;
+    int tmp_limit = min(tmp_size,MAX_N * MAX_N);
+    for(int i=0; i<tmp_limit; ++i){
         arr[i].val = tmp_vec[i];
     }
 
@@ -212,11 +218,14 @@ void run(int d, int p){
 
     make_arr();
 
+    // cout<<total_val<<endl;
+
     // if(d==1 && p ==3){
-    //     for(int i=0; i<n*n-1; ++i){
-    //         cout<<arr[i].val<<" ";
-    //     }
-    //     cout<<endl;
+        // for(int i=0; i<n*n-1; ++i){
+        //     if(arr[i].val < 0) cout<<arr[i].val<<" ";
+        //     // cout<<arr[i].val<<" ";
+        // }
+        // cout<<endl;
     // }
 
     // if(d==1 && p ==3){
@@ -226,15 +235,20 @@ void run(int d, int p){
     while(1){
         shorten();
 
+        // cout<<total_val<<endl;
+
         // if((d==1 && p ==3)){
         //     for(int i=0; i<n*n-1; ++i){
         //         cout<<arr[i].val<<" ";
         //     }
         //     cout<<endl;
         // }
+        // cout<<"run\n";
 
         if(!repeat()) break;
     }
+    // cout<<"before longer\n";
+    // cout<<total_val<<endl;
 
     // if((d==2 && p ==2)){
     //         for(int i=0; i<n*n-1; ++i){
@@ -244,6 +258,8 @@ void run(int d, int p){
     //     }
 
     longer();
+    // cout<<"after longer\n";
+    // cout<<total_val<<endl;
 
     // if((d==2 && p ==2)){
     //         for(int i=0; i<n*n-1; ++i){
@@ -253,8 +269,10 @@ void run(int d, int p){
     //     }
 
     roll_back();
+    // cout<<"after rollback\n";
+    
 
-    // if(d==2 && p ==2){
+    // if(d==0 && p ==4){
     //     print_map();
     // }
 
